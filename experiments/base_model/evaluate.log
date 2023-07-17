@@ -1,0 +1,4 @@
+2023-07-11 17:59:55,535:INFO: Creating the dataset...
+2023-07-11 17:59:55,535:INFO: - done.
+2023-07-11 17:59:55,676:INFO: Starting evaluation
+2023-07-11 18:00:00,003:INFO: - Eval metrics : accuracy: 0.844 ; loss: 0.372
