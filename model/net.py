@@ -6,6 +6,26 @@ import torch.nn as nn
 import torch.nn.functional as F
 from sklearn.metrics import mean_squared_error
 
+import utils
+
+
+class FourLayerModel(nn.Module):
+    def __init__(self, params):
+        self.num_channels = params.num_channels
+        super(FourLayerModel, self).__init__()
+        self.fc1 = nn.Linear(self.num_channels, 64)   # num_channels inputs -> 64 hidden units in the first layer
+        self.fc2 = nn.Linear(64, 128) # 64 hidden units -> 128 hidden units in the second layer
+        self.fc3 = nn.Linear(128, 64) # 128 hidden units -> 64 hidden units in the third layer
+        self.fc4 = nn.Linear(64, 2)   # 64 hidden units -> 2 output in the fourth layer
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = torch.relu(self.fc3(x))
+        x = self.fc4(x)
+
+        return x
+
 
 class Net(nn.Module):
     """
@@ -85,7 +105,7 @@ class Net(nn.Module):
         return F.log_softmax(s, dim=1)
 
 
-def loss_fn(outputs, labels, batch_data):
+def LSE_loss_fn(outputs, labels, batch_data):
     """
     Compute the cross entropy loss given outputs and labels.
 
@@ -100,8 +120,8 @@ def loss_fn(outputs, labels, batch_data):
           demonstrates how you can easily define a custom loss function.
     """
 
-    Mf_nom = 904  # [Kg] 운전석에 1명 탔을때
-    Mr_nom = 619  # [Kg] 운전석에 1명 탔을때
+    #Mf_nom = 904  # [Kg] 운전석에 1명 탔을때
+    #Mr_nom = 619  # [Kg] 운전석에 1명 탔을때
 
     Mf_nom = 945  # [Kg] 운전석에 2명 탔을때
     Mr_nom = 728  # [Kg] 운전석에 2명탔을때
@@ -132,12 +152,24 @@ def loss_fn(outputs, labels, batch_data):
     num_examples = batch_data.size()[0]  # batch size
     window_size = batch_data.size()[1]  # data number of columns
 
-    for i in range(num_examples):
-        for j in range(window_size):
-            result = (-(outputs[i][0] + outputs[i][1]) / M_nom * v0)
-            (batch_data[i][j][6] - result)
+    # Vy를 출력해주기 위한 변수
+    Vy = np.empty((0))
 
-    return -torch.sum(outputs[range(num_examples), labels]) / num_examples
+    loss = 0
+
+    for i in range(num_examples):
+        result = utils.bicycle_Vy(outputs[i][0][0], outputs[i][0][1], batch_data[i][-1][2], batch_data[i][-1][6],
+                               batch_data[i][-1][3], batch_data[i][-1][5])
+        '''
+        result = (-(outputs[i][0][0] + outputs[i][0][1]) / (M_nom * batch_data[i][-1][2]) * batch_data[i][-1][6] +
+                    ((Lr_nom * outputs[i][0][1] - Lf_nom * outputs[i][0][0]) / (M_nom * batch_data[i][-1][2]) - batch_data[i][-1][2]) * batch_data[i][-1][3] +
+                    outputs[i][0][0] * batch_data[i][-1][5] / M_nom) * T
+        '''
+        loss += torch.mean((labels[i] - result) ** 2)
+        result = result.data.cpu().numpy()
+        Vy = np.concatenate((Vy, np.array([result])), axis=0)
+
+    return loss, Vy
 
 
 def accuracy(outputs, labels):
@@ -155,11 +187,13 @@ def accuracy(outputs, labels):
 
 
 def mse(outputs, labels):
+    print(outputs.shape)
+    print(labels.shape)
     return mean_squared_error(outputs, labels)
 
 
 # maintain all metrics required in this dictionary- these are used in the training and evaluation loops
 metrics = {
-    'MSE': mse,
+    #'MSE': mse,
     # could add more metrics such as accuracy for each token type
 }

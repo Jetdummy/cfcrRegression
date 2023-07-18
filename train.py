@@ -24,6 +24,7 @@ parser.add_argument('--restore_file', default=None,
                     help="Optional, name of the file in --model_dir containing weights to reload before \
                     training")  # 'best' or 'train'
 
+
 def train(model, optimizer, loss_fn, dataloader, metrics, params):
     """Train the model on `num_steps` batches
 
@@ -57,7 +58,7 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params):
 
             # compute model output and loss
             output_batch = model(train_batch)
-            loss = loss_fn(output_batch, labels_batch, batch_data)
+            loss, _ = loss_fn(output_batch, labels_batch, batch_data)
 
             # clear previous gradients, compute gradients of all variables wrt loss
             optimizer.zero_grad()
@@ -73,15 +74,14 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params):
                 labels_batch = labels_batch.data.cpu().numpy()
 
                 # compute all metrics on this batch
-                summary_batch = {metric: metrics[metric](output_batch, labels_batch)
-                                 for metric in metrics}
+                summary_batch = {metric: metrics[metric](output_batch, labels_batch) for metric in metrics}
                 summary_batch['loss'] = loss.item()
                 summ.append(summary_batch)
 
             # update the average loss
             loss_avg.update(loss.item())
 
-            t.set_postfix(loss='{:05.3f}'.format(loss_avg()))
+            t.set_postfix(loss='{:05.5f}'.format(loss_avg()))
             t.update()
 
     # compute mean of all metrics in summary
@@ -90,6 +90,7 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params):
     metrics_string = " ; ".join("{}: {:05.3f}".format(k, v)
                                 for k, v in metrics_mean.items())
     logging.info("- Train metrics: " + metrics_string)
+
 
 def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer, loss_fn, metrics, params, model_dir,
                        restore_file=None):
@@ -123,9 +124,9 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer, loss_
         train(model, optimizer, loss_fn, train_dataloader, metrics, params)
 
         # Evaluate for one epoch on validation set
-        val_metrics = evaluate(model, loss_fn, val_dataloader, metrics, params)
+        val_metrics, _, _ = evaluate(model, loss_fn, val_dataloader, metrics, params)
 
-        val_acc = val_metrics['accuracy']
+        val_acc = val_metrics['loss']
         is_best = val_acc >= best_val_acc
 
         # Save weights
@@ -151,7 +152,6 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer, loss_
         utils.save_dict_to_json(val_metrics, last_json_path)
 
 
-
 if __name__ == '__main__':
     # Load the parameters from json file
     args = parser.parse_args()
@@ -175,11 +175,11 @@ if __name__ == '__main__':
     logging.info("Loading the datasets...")
 
     # Choose input features in data
-    selected_indices = [1, 2, 3]
+    selected_indices = [8, 9, 10, 11, 12, 13]
 
     # Set input number of columns
-    window = 10
-    shift = 5
+    window = 1
+    shift = 1
 
     # fetch dataloaders
     dataloaders = data_loader.fetch_dataloader(
@@ -189,12 +189,17 @@ if __name__ == '__main__':
 
     logging.info("- done.")
 
-    # Define the model and optimizer
-    model = net.Net(params).cuda() if params.cuda else net.Net(params)
+    # Define the model
+    model = net.FourLayerModel(params).cuda() if params.cuda else net.FourLayerModel(params)
+
+    # Use parameters as float 64
+    model.double()
+
+    # Define the optimizer
     optimizer = optim.Adam(model.parameters(), lr=params.learning_rate)
 
     # fetch loss function and metrics
-    loss_fn = net.loss_fn
+    loss_fn = net.LSE_loss_fn
     metrics = net.metrics
 
     # Train the model

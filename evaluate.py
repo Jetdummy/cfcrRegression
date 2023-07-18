@@ -12,7 +12,7 @@ import model.net as net
 import model.data_loader as data_loader
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--data_dir', default='data/64x64_SIGNS',
+parser.add_argument('--data_dir', default='data/pidn',
                     help="Directory containing the dataset")
 parser.add_argument('--model_dir', default='experiments/base_model',
                     help="Directory containing params.json")
@@ -37,6 +37,10 @@ def evaluate(model, loss_fn, dataloader, metrics, params):
 
     # summary for current eval loop
     summ = []
+    y_true = np.empty((0))
+    #y_pred = np.empty((0, 2))
+    Vy_pred = np.empty((0))
+
 
     # compute metrics over the dataset
     for data_batch, labels_batch, all_batch in dataloader:
@@ -50,11 +54,16 @@ def evaluate(model, loss_fn, dataloader, metrics, params):
 
         # compute model output
         output_batch = model(data_batch)
-        loss = loss_fn(output_batch, labels_batch, all_batch)
+        loss, result = loss_fn(output_batch, labels_batch, all_batch)
 
         # extract data from torch Variable, move to cpu, convert to numpy arrays
         output_batch = output_batch.data.cpu().numpy()
         labels_batch = labels_batch.data.cpu().numpy()
+
+        # Concat output and label
+        y_true = np.concatenate((y_true, labels_batch), axis=0)
+        #y_pred = np.concatenate((y_pred, result), axis=0)
+        Vy_pred = np.concatenate((Vy_pred, result), axis=0)
 
         # compute all metrics on this batch
         summary_batch = {metric: metrics[metric](output_batch, labels_batch)
@@ -65,10 +74,10 @@ def evaluate(model, loss_fn, dataloader, metrics, params):
     # compute mean of all metrics in summary
     metrics_mean = {metric: np.mean([x[metric]
                                      for x in summ]) for metric in summ[0]}
-    metrics_string = " ; ".join("{}: {:05.3f}".format(k, v)
+    metrics_string = " ; ".join("{}: {:05.5f}".format(k, v)
                                 for k, v in metrics_mean.items())
     logging.info("- Eval metrics : " + metrics_string)
-    return metrics_mean
+    return metrics_mean, y_true, Vy_pred
 
 
 if __name__ == '__main__':
@@ -96,16 +105,26 @@ if __name__ == '__main__':
     # Create the input data pipeline
     logging.info("Creating the dataset...")
 
+    # Choose input features in data
+    selected_indices = [8, 9, 10, 11, 12, 13]
+
+    # Set input number of columns
+    window = 1
+    shift = 1
+
     # fetch dataloaders
-    dataloaders = data_loader.fetch_dataloader(['test'], args.data_dir, params)
+    dataloaders = data_loader.fetch_dataloader(['test'], args.data_dir, params, selected_indices, window, shift)
     test_dl = dataloaders['test']
 
     logging.info("- done.")
 
     # Define the model
-    model = net.Net(params).cuda() if params.cuda else net.Net(params)
+    model = net.FourLayerModel(params).cuda() if params.cuda else net.FourLayerModel(params)
 
-    loss_fn = net.loss_fn
+    # Use parameters as float 64
+    model.double()
+
+    loss_fn = net.LSE_loss_fn
     metrics = net.metrics
 
     logging.info("Starting evaluation")
@@ -115,7 +134,8 @@ if __name__ == '__main__':
         args.model_dir, args.restore_file + '.pth.tar'), model)
 
     # Evaluate
-    test_metrics = evaluate(model, loss_fn, test_dl, metrics, params)
+    test_metrics, y_true, Vy_pred = evaluate(model, loss_fn, test_dl, metrics, params)
+    utils.compare_as_plot(y_true, Vy_pred)
     save_path = os.path.join(
         args.model_dir, "metrics_test_{}.json".format(args.restore_file))
     utils.save_dict_to_json(test_metrics, save_path)

@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import shutil
+import matplotlib.pyplot as plt
 
 import torch
 
@@ -142,3 +143,42 @@ def load_checkpoint(checkpoint, model, optimizer=None):
         optimizer.load_state_dict(checkpoint['optim_dict'])
 
     return checkpoint
+
+
+def compare_as_plot(y_true, y_pred):
+    print(y_true.shape, y_pred.shape)
+    # Create a plot
+    plt.figure(figsize=(20, 15))
+
+    # Plot true data in blue
+    plt.scatter(range(len(y_true)), y_true, c='blue', label='True Data')
+
+    # Plot predicted data in red
+    plt.scatter(range(len(y_pred)), y_pred, c='red', label='Predicted Data')
+
+    # Add labels and legend
+    plt.xlabel('Sample Index')
+    plt.ylabel('Target Value')
+    plt.legend()
+
+    # Show the plot
+    plt.show()
+
+
+def bicycle_Vy(Cf, Cr, Vx, Vy, Yaw, Sas):
+    # Mf_nom = 904  # [Kg] 운전석에 1명 탔을때
+    # Mr_nom = 619  # [Kg] 운전석에 1명 탔을때
+
+    Mf_nom = 945  # [Kg] 운전석에 2명 탔을때
+    Mr_nom = 728  # [Kg] 운전석에 2명탔을때
+
+    M_nom = Mf_nom + Mr_nom  # [kg]
+
+    Lf_nom = 2.645 * Mr_nom / M_nom  # [m]
+    Lr_nom = 2.645 - Lf_nom  # [m]
+
+    T = 0.01  # time step
+
+    result = (-(Cf + Cr) / (M_nom * Vx) * Vy + (
+                (Lr_nom * Cr - Lf_nom * Cf) / (M_nom * Vx) - Vx) * Yaw + Cf * Sas / M_nom) * T
+    return result
