@@ -101,3 +101,85 @@
 2023-07-18 16:51:49,266:INFO: - done.
 2023-07-18 16:51:50,145:INFO: Starting evaluation
 2023-07-18 16:51:58,515:INFO: - Eval metrics : loss: 0.00041
+2023-07-19 13:52:18,542:INFO: Creating the dataset...
+2023-07-19 13:52:18,568:INFO: - done.
+2023-07-19 13:52:19,427:INFO: Starting evaluation
+2023-07-19 13:52:27,917:INFO: - Eval metrics : loss: 0.00038
+2023-07-19 15:55:52,866:INFO: Creating the dataset...
+2023-07-19 15:55:52,881:INFO: - done.
+2023-07-19 15:55:53,740:INFO: Starting evaluation
+2023-07-19 15:56:39,100:INFO: Creating the dataset...
+2023-07-19 15:56:39,116:INFO: - done.
+2023-07-19 15:56:39,991:INFO: Starting evaluation
+2023-07-19 15:57:10,957:INFO: Creating the dataset...
+2023-07-19 15:57:10,974:INFO: - done.
+2023-07-19 15:57:11,874:INFO: Starting evaluation
+2023-07-19 15:57:45,731:INFO: Creating the dataset...
+2023-07-19 15:57:45,747:INFO: - done.
+2023-07-19 15:57:46,600:INFO: Starting evaluation
+2023-07-19 15:58:47,152:INFO: Creating the dataset...
+2023-07-19 15:58:47,167:INFO: - done.
+2023-07-19 15:58:48,063:INFO: Starting evaluation
+2023-07-19 15:59:10,022:INFO: Creating the dataset...
+2023-07-19 15:59:10,037:INFO: - done.
+2023-07-19 15:59:10,907:INFO: Starting evaluation
+2023-07-19 15:59:20,164:INFO: - Eval metrics : loss: 0.00038
+2023-07-19 16:00:24,890:INFO: Creating the dataset...
+2023-07-19 16:00:24,906:INFO: - done.
+2023-07-19 16:00:25,775:INFO: Starting evaluation
+2023-07-19 16:00:34,381:INFO: - Eval metrics : loss: 0.00038
+2023-07-19 16:02:03,625:INFO: Creating the dataset...
+2023-07-19 16:02:03,625:INFO: - done.
+2023-07-19 16:02:04,500:INFO: Starting evaluation
+2023-07-19 16:02:13,074:INFO: - Eval metrics : loss: 0.00038
+2023-07-19 16:02:46,200:INFO: Creating the dataset...
+2023-07-19 16:02:46,216:INFO: - done.
+2023-07-19 16:02:47,085:INFO: Starting evaluation
+2023-07-19 16:02:55,550:INFO: - Eval metrics : loss: 0.00038
+2023-07-19 16:10:29,355:INFO: Creating the dataset...
+2023-07-19 16:10:29,370:INFO: - done.
+2023-07-19 16:10:30,251:INFO: Starting evaluation
+2023-07-19 16:10:38,719:INFO: - Eval metrics : loss: 0.00038
+2023-07-19 16:11:59,045:INFO: Creating the dataset...
+2023-07-19 16:11:59,061:INFO: - done.
+2023-07-19 16:11:59,951:INFO: Starting evaluation
+2023-07-19 16:12:08,480:INFO: - Eval metrics : loss: 0.00038
+2023-07-19 16:12:23,546:INFO: Creating the dataset...
+2023-07-19 16:12:23,562:INFO: - done.
+2023-07-19 16:12:24,437:INFO: Starting evaluation
+2023-07-19 16:12:32,937:INFO: - Eval metrics : loss: 0.00038
+2023-07-19 16:25:30,297:INFO: Creating the dataset...
+2023-07-19 16:25:30,312:INFO: - done.
+2023-07-19 16:25:31,171:INFO: Starting evaluation
+2023-07-19 16:25:39,988:INFO: - Eval metrics : loss: 0.00038
+2023-07-21 08:56:35,355:INFO: Creating the dataset...
+2023-07-21 08:56:35,370:INFO: - done.
+2023-07-21 08:56:36,325:INFO: Starting evaluation
+2023-07-21 08:56:45,340:INFO: - Eval metrics : loss: 0.00036
+2023-07-21 10:02:05,891:INFO: Creating the dataset...
+2023-07-21 10:02:05,906:INFO: - done.
+2023-07-21 10:02:06,791:INFO: Starting evaluation
+2023-07-21 10:02:15,792:INFO: - Eval metrics : loss: 0.00815
+2023-07-21 12:53:04,125:INFO: Creating the dataset...
+2023-07-21 12:53:04,140:INFO: - done.
+2023-07-21 12:53:05,007:INFO: Starting evaluation
+2023-07-21 12:53:14,072:INFO: - Eval metrics : loss: 0.00815
+2023-07-21 13:18:32,791:INFO: Creating the dataset...
+2023-07-21 13:18:32,791:INFO: - done.
+2023-07-21 13:18:33,662:INFO: Starting evaluation
+2023-07-21 13:32:16,349:INFO: Creating the dataset...
+2023-07-21 13:32:16,364:INFO: - done.
+2023-07-21 13:32:17,234:INFO: Starting evaluation
+2023-07-21 13:32:26,165:INFO: - Eval metrics : loss: 0.00882
+2023-07-21 13:34:37,969:INFO: Creating the dataset...
+2023-07-21 13:34:37,969:INFO: - done.
+2023-07-21 13:34:38,845:INFO: Starting evaluation
+2023-07-21 13:34:52,383:INFO: - Eval metrics : loss: 0.00882
+2023-07-21 14:37:32,731:INFO: Creating the dataset...
+2023-07-21 14:37:32,746:INFO: - done.
+2023-07-21 14:37:33,621:INFO: Starting evaluation
+2023-07-21 14:37:47,449:INFO: - Eval metrics : loss: 0.00815
+2023-07-25 12:05:35,003:INFO: Creating the dataset...
+2023-07-25 12:05:35,035:INFO: - done.
+2023-07-25 12:05:35,920:INFO: Starting evaluation
+2023-07-25 12:05:49,350:INFO: - Eval metrics : loss: 0.01773

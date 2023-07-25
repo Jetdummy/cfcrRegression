@@ -38,7 +38,7 @@ def evaluate(model, loss_fn, dataloader, metrics, params):
     # summary for current eval loop
     summ = []
     y_true = np.empty((0))
-    #y_pred = np.empty((0, 2))
+    y_pred = np.empty((1, 2))
     Vy_pred = np.empty((0))
 
 
@@ -54,15 +54,21 @@ def evaluate(model, loss_fn, dataloader, metrics, params):
 
         # compute model output
         output_batch = model(data_batch)
-        loss, result = loss_fn(output_batch, labels_batch, all_batch)
-
+        loss, result = loss_fn(output_batch, labels_batch, all_batch, False)
+        print(loss)
         # extract data from torch Variable, move to cpu, convert to numpy arrays
         output_batch = output_batch.data.cpu().numpy()
         labels_batch = labels_batch.data.cpu().numpy()
 
+        if output_batch.ndim == 1:
+            output_batch = output_batch.reshape(1, 2)
+        else:
+            squeezed_array = np.squeeze(output_batch)
+            output_batch = squeezed_array.reshape((-1, 2))
+
         # Concat output and label
         y_true = np.concatenate((y_true, labels_batch), axis=0)
-        #y_pred = np.concatenate((y_pred, result), axis=0)
+        y_pred = np.concatenate((y_pred, output_batch), axis=0)
         Vy_pred = np.concatenate((Vy_pred, result), axis=0)
 
         # compute all metrics on this batch
@@ -77,7 +83,7 @@ def evaluate(model, loss_fn, dataloader, metrics, params):
     metrics_string = " ; ".join("{}: {:05.5f}".format(k, v)
                                 for k, v in metrics_mean.items())
     logging.info("- Eval metrics : " + metrics_string)
-    return metrics_mean, y_true, Vy_pred
+    return metrics_mean, y_true, Vy_pred, y_pred
 
 
 if __name__ == '__main__':
@@ -124,7 +130,7 @@ if __name__ == '__main__':
     # Use parameters as float 64
     model.double()
 
-    loss_fn = net.LSE_loss_fn
+    loss_fn = net.MSE_loss_fn
     metrics = net.metrics
 
     logging.info("Starting evaluation")
@@ -134,8 +140,9 @@ if __name__ == '__main__':
         args.model_dir, args.restore_file + '.pth.tar'), model)
 
     # Evaluate
-    test_metrics, y_true, Vy_pred = evaluate(model, loss_fn, test_dl, metrics, params)
+    test_metrics, y_true, Vy_pred, y_pred = evaluate(model, loss_fn, test_dl, metrics, params)
     utils.compare_as_plot(y_true, Vy_pred)
+    utils.CfCr_as_plot(y_pred)
     save_path = os.path.join(
         args.model_dir, "metrics_test_{}.json".format(args.restore_file))
     utils.save_dict_to_json(test_metrics, save_path)

@@ -58,7 +58,15 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params):
 
             # compute model output and loss
             output_batch = model(train_batch)
-            loss, _ = loss_fn(output_batch, labels_batch, batch_data)
+            '''
+            Cf = output_batch[:, 0, 0]
+            Cr = output_batch[:, 0, 1]
+            Vx = batch_data[:, -1, 2]
+            Vy = batch_data[:, -1, 6]
+            Yawrate = batch_data[:, -1, 3]
+            Sas = batch_data[:, -1, 5]
+            '''
+            loss, _ = loss_fn(output_batch, labels_batch, batch_data, True)
 
             # clear previous gradients, compute gradients of all variables wrt loss
             optimizer.zero_grad()
@@ -87,7 +95,7 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params):
     # compute mean of all metrics in summary
     metrics_mean = {metric: np.mean([x[metric]
                                      for x in summ]) for metric in summ[0]}
-    metrics_string = " ; ".join("{}: {:05.3f}".format(k, v)
+    metrics_string = " ; ".join("{}: {:05.5f}".format(k, v)
                                 for k, v in metrics_mean.items())
     logging.info("- Train metrics: " + metrics_string)
 
@@ -124,7 +132,7 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer, loss_
         train(model, optimizer, loss_fn, train_dataloader, metrics, params)
 
         # Evaluate for one epoch on validation set
-        val_metrics, _, _ = evaluate(model, loss_fn, val_dataloader, metrics, params)
+        val_metrics, _, _, _ = evaluate(model, loss_fn, val_dataloader, metrics, params)
 
         val_acc = val_metrics['loss']
         is_best = val_acc >= best_val_acc
@@ -199,7 +207,7 @@ if __name__ == '__main__':
     optimizer = optim.Adam(model.parameters(), lr=params.learning_rate)
 
     # fetch loss function and metrics
-    loss_fn = net.LSE_loss_fn
+    loss_fn = net.MSE_loss_fn
     metrics = net.metrics
 
     # Train the model

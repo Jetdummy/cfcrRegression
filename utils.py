@@ -151,21 +151,41 @@ def compare_as_plot(y_true, y_pred):
     plt.figure(figsize=(20, 15))
 
     # Plot true data in blue
-    plt.scatter(range(len(y_true)), y_true, c='blue', label='True Data')
+    plt.plot(range(len(y_true)), y_true, c='blue', label='True Data')
 
     # Plot predicted data in red
-    plt.scatter(range(len(y_pred)), y_pred, c='red', label='Predicted Data')
+    plt.plot(range(len(y_pred)), y_pred, c='red', label='Predicted Data')
 
     # Add labels and legend
-    plt.xlabel('Sample Index')
-    plt.ylabel('Target Value')
+    plt.xlabel('time[0.01s]')
+    plt.ylabel('dVy')
     plt.legend()
 
     # Show the plot
     plt.show()
 
 
-def bicycle_Vy(Cf, Cr, Vx, Vy, Yaw, Sas):
+def CfCr_as_plot(y_pred):
+    print(y_pred.shape)
+    # Create a plot
+    plt.figure(figsize=(20, 15))
+
+    # Plot true data in blue
+    plt.plot(range(len(y_pred[:, 0])), y_pred[:, 0], c='blue', label='Cf')
+
+    # Plot predicted data in red
+    plt.plot(range(len(y_pred[:, 1])), y_pred[:, 1], c='red', label='Cr')
+
+    # Add labels and legend
+    plt.xlabel('time[0.01s]')
+    plt.ylabel('cornering stiffness')
+    plt.legend()
+
+    # Show the plot
+    plt.show()
+
+
+def bicycle_dVy1(Cf, Cr, Vx, Vy, Yaw, Sas):
     # Mf_nom = 904  # [Kg] 운전석에 1명 탔을때
     # Mr_nom = 619  # [Kg] 운전석에 1명 탔을때
 
@@ -179,6 +199,69 @@ def bicycle_Vy(Cf, Cr, Vx, Vy, Yaw, Sas):
 
     T = 0.01  # time step
 
-    result = (-(Cf + Cr) / (M_nom * Vx) * Vy + (
-                (Lr_nom * Cr - Lf_nom * Cf) / (M_nom * Vx) - Vx) * Yaw + Cf * Sas / M_nom) * T
-    return result
+    dVy = (-(Cf + Cr) / (M_nom * Vx) * Vy +
+           ((Lr_nom * Cr - Lf_nom * Cf) / (M_nom * Vx) - Vx) * Yaw +
+           Cf * Sas / M_nom) * T
+    return dVy
+
+
+def bicycle_Vy1(Cf, Cr, Vx, Vy, yr, Sas):
+    # Mf_nom = 904  # [Kg] 운전석에 1명 탔을때
+    # Mr_nom = 619  # [Kg] 운전석에 1명 탔을때
+
+    Mf_nom = 945  # [Kg] 운전석에 2명 탔을때
+    Mr_nom = 728  # [Kg] 운전석에 2명탔을때
+
+    M_nom = Mf_nom + Mr_nom  # [kg]
+
+    Lf_nom = 2.645 * Mr_nom / M_nom  # [m]
+    Lr_nom = 2.645 - Lf_nom  # [m]
+
+    T = 0.01  # time step
+
+    #Cf = 2 * 1.2148 * 10 ** 5 * Cf + 0.5 * 1.2715 * 10 ** 5
+    #Cr = 2 * 1.2148 * 10 ** 5 * Cr + 0.5 * 1.2715 * 10 ** 5
+
+    '''
+    (1-(Cf(1,i-1) + Cr(1,i-1))*Ts / (M_nom * v0)) .* Vy_est_k_1 + ...
+        ((Lr_nom * Cr(1,i-1) - Lf_nom * Cf(1,i-1)) / (M_nom * v0)- v0)*Ts .* yawrate_k_1 + ...
+        Cf(1,i-1) .* sas_loss(1,i-1)*Ts / M_nom;
+        '''
+
+    Vy_next = (1-(Cf + Cr) * T / (M_nom * Vx)) * Vy + \
+              ((Lr_nom * Cr - Lf_nom * Cf) / (M_nom * Vx) - Vx) * T * yr + \
+              Cf * Sas * T / M_nom
+
+    return Vy_next
+
+
+def bicycle_yr1(Cf, Cr, Vx, Vy, yr, Sas):
+    # Mf_nom = 904  # [Kg] 운전석에 1명 탔을때
+    # Mr_nom = 619  # [Kg] 운전석에 1명 탔을때
+
+    Mf_nom = 945  # [Kg] 운전석에 2명 탔을때
+    Mr_nom = 728  # [Kg] 운전석에 2명탔을때
+
+    M_nom = Mf_nom + Mr_nom  # [kg]
+
+    Lf_nom = 2.645 * Mr_nom / M_nom  # [m]
+    Lr_nom = 2.645 - Lf_nom  # [m]
+
+    J_nom = 1 * 3122 + 102 * (Lf_nom ** 2 + Lr_nom ** 2) # 3122kgm^2 from LM Carsim par file (sprung mass inertia)
+
+    T = 0.01  # time step
+
+    #Cf = 2 * 1.2148 * 10 ** 5 * Cf + 0.5 * 1.2715 * 10 ** 5
+    #Cr = 2 * 1.2148 * 10 ** 5 * Cr + 0.5 * 1.2715 * 10 ** 5
+
+    '''
+    (-(Lf_nom*Cf(1,i-1) - Lr_nom*Cr(1,i-1))*Ts / (J_nom * v0)) .* Vy_est_k_1 + ...
+        (1-((Lf_nom*Lf_nom*Cf(1,i-1) + Lr_nom*Lr_nom*Cr(1,i-1)) / (J_nom * v0))*Ts) .* yawrate_k_1 + ...
+        Lf_nom*Cf(1,i-1) .* sas_loss(1,i-1)*Ts / J_nom;
+        '''
+
+    yr_next = (-(Lf_nom * Cf - Lr_nom * Cr) * T / (J_nom * Vx)) * Vy + \
+              (1 - ((Lf_nom * Lf_nom * Cf + Lr_nom * Lr_nom * Cr) / (J_nom * Vx)) * T) * yr + \
+              Lf_nom * Cf * Sas * T / J_nom
+
+    return yr_next

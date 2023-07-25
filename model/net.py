@@ -105,13 +105,15 @@ class Net(nn.Module):
         return F.log_softmax(s, dim=1)
 
 
-def LSE_loss_fn(outputs, labels, batch_data):
+def MSE_loss_fn(outputs, labels, batch_data, train):
     """
     Compute the cross entropy loss given outputs and labels.
 
     Args:
         outputs: (Variable) dimension batch_size x 6 - output of the model
         labels: (Variable) dimension batch_size, where each element is a value in [0, 1, 2, 3, 4, 5]
+        batch_data : (Variable) dimension batch_size X all indices
+        train: (Boolean) if train, previous Vy is ground truth
 
     Returns:
         loss (Variable): cross entropy loss for all images in the batch
@@ -153,23 +155,37 @@ def LSE_loss_fn(outputs, labels, batch_data):
     window_size = batch_data.size()[1]  # data number of columns
 
     # Vy를 출력해주기 위한 변수
-    Vy = np.empty((0))
+    result_array = np.empty((0))
 
     loss = 0
+    result = batch_data[0][-1][6]
 
     for i in range(num_examples):
-        result = utils.bicycle_Vy(outputs[i][0][0], outputs[i][0][1], batch_data[i][-1][2], batch_data[i][-1][6],
-                               batch_data[i][-1][3], batch_data[i][-1][5])
+        # bicycle_dVy1, bicycle_Vy1
+        if train:
+            result = utils.bicycle_Vy1(outputs[i][0][0], outputs[i][0][1], batch_data[i][-1][2], batch_data[i][-1][6],
+                                        batch_data[i][-1][3], batch_data[i][-1][5])
+            loss += (labels[i] - result) ** 2
+            result = result.data.cpu().numpy()
+        else:
+            Cf = outputs[i][0][0].data.cpu().numpy()
+            Cr = outputs[i][0][1].data.cpu().numpy()
+            Vx = batch_data[i][-1][2].data.cpu().numpy()
+            Yr = batch_data[i][-1][3].data.cpu().numpy()
+            Sas = batch_data[i][-1][5].data.cpu().numpy()
+
+            result = utils.bicycle_Vy1(Cf, Cr, Vx, result, Yr, Sas)
+            loss += (labels[i] - result) ** 2
+            # result = result.data.cpu().numpy()
         '''
         result = (-(outputs[i][0][0] + outputs[i][0][1]) / (M_nom * batch_data[i][-1][2]) * batch_data[i][-1][6] +
                     ((Lr_nom * outputs[i][0][1] - Lf_nom * outputs[i][0][0]) / (M_nom * batch_data[i][-1][2]) - batch_data[i][-1][2]) * batch_data[i][-1][3] +
                     outputs[i][0][0] * batch_data[i][-1][5] / M_nom) * T
         '''
-        loss += torch.mean((labels[i] - result) ** 2)
-        result = result.data.cpu().numpy()
-        Vy = np.concatenate((Vy, np.array([result])), axis=0)
 
-    return loss, Vy
+        result_array = np.concatenate((result_array, np.array([result])), axis=0)
+
+    return loss / num_examples, result_array
 
 
 def accuracy(outputs, labels):
@@ -187,8 +203,6 @@ def accuracy(outputs, labels):
 
 
 def mse(outputs, labels):
-    print(outputs.shape)
-    print(labels.shape)
     return mean_squared_error(outputs, labels)
 
 

@@ -70,7 +70,7 @@ class PIDNDataset(Dataset):
         end_idx = start_idx + self.window
         selected_data = self.data[dataset_index].iloc[start_idx:end_idx, :]
         selected_data_x = self.data[dataset_index].iloc[start_idx:end_idx, self.selected_indices]
-        selected_data_y = self.data[dataset_index].iloc[end_idx+1, 6]  # 6 or 7
+        selected_data_y = self.data[dataset_index].iloc[end_idx+1, 7]  # 6 or 7
 
         return torch.tensor(selected_data_x.to_numpy()), torch.tensor(selected_data_y), torch.tensor(selected_data.to_numpy())
 

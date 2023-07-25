@@ -162,3 +162,447 @@
 2023-07-18 14:41:38,272:INFO: - done.
 2023-07-18 14:41:39,162:INFO: Starting training for 5 epoch(s)
 2023-07-18 14:41:39,162:INFO: Epoch 1/5
+2023-07-18 17:20:26,453:INFO: Loading the datasets...
+2023-07-18 17:20:26,734:INFO: - done.
+2023-07-18 17:20:27,598:INFO: Starting training for 20 epoch(s)
+2023-07-18 17:20:27,598:INFO: Epoch 1/20
+2023-07-19 12:44:27,487:INFO: Loading the datasets...
+2023-07-19 12:44:27,862:INFO: - done.
+2023-07-19 12:44:28,798:INFO: Starting training for 20 epoch(s)
+2023-07-19 12:44:28,798:INFO: Epoch 1/20
+2023-07-19 12:46:34,219:INFO: - Train metrics: loss: 0.009
+2023-07-19 12:46:39,535:INFO: - Eval metrics : loss: 0.01207
+2023-07-19 12:46:39,551:INFO: - Found new best accuracy
+2023-07-19 12:46:39,551:INFO: Epoch 2/20
+2023-07-19 12:48:44,826:INFO: - Train metrics: loss: 0.008
+2023-07-19 12:48:50,362:INFO: - Eval metrics : loss: 0.01141
+2023-07-19 12:48:50,362:INFO: Epoch 3/20
+2023-07-19 12:50:57,488:INFO: - Train metrics: loss: 0.008
+2023-07-19 12:51:02,844:INFO: - Eval metrics : loss: 0.01096
+2023-07-19 12:51:02,844:INFO: Epoch 4/20
+2023-07-19 12:53:10,260:INFO: - Train metrics: loss: 0.006
+2023-07-19 12:53:15,656:INFO: - Eval metrics : loss: 0.00996
+2023-07-19 12:53:15,656:INFO: Epoch 5/20
+2023-07-19 12:55:22,781:INFO: - Train metrics: loss: 0.007
+2023-07-19 12:55:28,282:INFO: - Eval metrics : loss: 0.01004
+2023-07-19 12:55:28,298:INFO: Epoch 6/20
+2023-07-19 12:57:35,502:INFO: - Train metrics: loss: 0.007
+2023-07-19 12:57:40,912:INFO: - Eval metrics : loss: 0.00969
+2023-07-19 12:57:40,912:INFO: Epoch 7/20
+2023-07-19 12:59:47,285:INFO: - Train metrics: loss: 0.008
+2023-07-19 12:59:52,736:INFO: - Eval metrics : loss: 0.00942
+2023-07-19 12:59:52,736:INFO: Epoch 8/20
+2023-07-19 13:01:59,064:INFO: - Train metrics: loss: 0.006
+2023-07-19 13:02:04,479:INFO: - Eval metrics : loss: 0.00958
+2023-07-19 13:02:04,479:INFO: Epoch 9/20
+2023-07-19 13:04:10,976:INFO: - Train metrics: loss: 0.007
+2023-07-19 13:04:16,446:INFO: - Eval metrics : loss: 0.00945
+2023-07-19 13:04:16,461:INFO: Epoch 10/20
+2023-07-19 13:06:23,979:INFO: - Train metrics: loss: 0.007
+2023-07-19 13:06:29,407:INFO: - Eval metrics : loss: 0.00934
+2023-07-19 13:06:29,422:INFO: Epoch 11/20
+2023-07-19 13:08:36,736:INFO: - Train metrics: loss: 0.007
+2023-07-19 13:08:42,139:INFO: - Eval metrics : loss: 0.00954
+2023-07-19 13:08:42,155:INFO: Epoch 12/20
+2023-07-19 13:10:49,423:INFO: - Train metrics: loss: 0.007
+2023-07-19 13:10:54,977:INFO: - Eval metrics : loss: 0.00948
+2023-07-19 13:10:54,977:INFO: Epoch 13/20
+2023-07-19 13:13:02,580:INFO: - Train metrics: loss: 0.007
+2023-07-19 13:13:08,086:INFO: - Eval metrics : loss: 0.01036
+2023-07-19 13:13:08,102:INFO: Epoch 14/20
+2023-07-19 13:15:16,606:INFO: - Train metrics: loss: 0.008
+2023-07-19 13:15:22,025:INFO: - Eval metrics : loss: 0.00964
+2023-07-19 13:15:22,025:INFO: Epoch 15/20
+2023-07-19 13:17:29,946:INFO: - Train metrics: loss: 0.007
+2023-07-19 13:17:35,484:INFO: - Eval metrics : loss: 0.01023
+2023-07-19 13:17:35,500:INFO: Epoch 16/20
+2023-07-19 13:19:43,638:INFO: - Train metrics: loss: 0.007
+2023-07-19 13:19:48,982:INFO: - Eval metrics : loss: 0.00957
+2023-07-19 13:19:48,982:INFO: Epoch 17/20
+2023-07-19 13:21:56,792:INFO: - Train metrics: loss: 0.007
+2023-07-19 13:22:02,212:INFO: - Eval metrics : loss: 0.00901
+2023-07-19 13:22:02,212:INFO: Epoch 18/20
+2023-07-19 13:24:10,631:INFO: - Train metrics: loss: 0.006
+2023-07-19 13:24:16,025:INFO: - Eval metrics : loss: 0.00969
+2023-07-19 13:24:16,041:INFO: Epoch 19/20
+2023-07-19 13:26:23,984:INFO: - Train metrics: loss: 0.007
+2023-07-19 13:26:29,393:INFO: - Eval metrics : loss: 0.00963
+2023-07-19 13:26:29,409:INFO: Epoch 20/20
+2023-07-19 13:28:37,028:INFO: - Train metrics: loss: 0.007
+2023-07-19 13:28:42,385:INFO: - Eval metrics : loss: 0.00919
+2023-07-19 17:06:46,964:INFO: Loading the datasets...
+2023-07-19 17:06:47,339:INFO: - done.
+2023-07-19 17:06:48,230:INFO: Starting training for 20 epoch(s)
+2023-07-19 17:06:48,230:INFO: Epoch 1/20
+2023-07-19 17:08:51,229:INFO: - Train metrics: loss: 0.000
+2023-07-19 17:16:57,471:INFO: Loading the datasets...
+2023-07-19 17:16:57,752:INFO: - done.
+2023-07-19 17:16:58,627:INFO: Starting training for 20 epoch(s)
+2023-07-19 17:16:58,627:INFO: Epoch 1/20
+2023-07-19 17:17:14,002:INFO: Loading the datasets...
+2023-07-19 17:17:14,309:INFO: - done.
+2023-07-19 17:17:15,199:INFO: Starting training for 2 epoch(s)
+2023-07-19 17:17:15,199:INFO: Epoch 1/2
+2023-07-19 17:19:18,664:INFO: - Train metrics: loss: 0.000
+2023-07-19 17:24:57,596:INFO: Loading the datasets...
+2023-07-19 17:24:57,887:INFO: - done.
+2023-07-19 17:24:58,778:INFO: Starting training for 2 epoch(s)
+2023-07-19 17:24:58,778:INFO: Epoch 1/2
+2023-07-19 17:27:02,330:INFO: - Train metrics: loss: 0.000
+2023-07-19 17:28:13,879:INFO: Loading the datasets...
+2023-07-19 17:28:14,165:INFO: - done.
+2023-07-19 17:28:15,056:INFO: Starting training for 2 epoch(s)
+2023-07-19 17:28:15,056:INFO: Epoch 1/2
+2023-07-19 17:30:19,890:INFO: - Train metrics: loss: 0.000
+2023-07-19 17:31:05,394:INFO: Loading the datasets...
+2023-07-19 17:31:05,675:INFO: - done.
+2023-07-19 17:31:06,550:INFO: Starting training for 2 epoch(s)
+2023-07-19 17:31:06,550:INFO: Epoch 1/2
+2023-07-19 17:31:32,484:INFO: Loading the datasets...
+2023-07-19 17:31:32,781:INFO: - done.
+2023-07-19 17:31:33,665:INFO: Starting training for 2 epoch(s)
+2023-07-19 17:31:33,665:INFO: Epoch 1/2
+2023-07-19 17:33:32,371:INFO: - Train metrics: loss: 0.000
+2023-07-19 17:41:17,586:INFO: Loading the datasets...
+2023-07-19 17:41:17,851:INFO: - done.
+2023-07-19 17:41:18,736:INFO: Starting training for 2 epoch(s)
+2023-07-19 17:41:18,736:INFO: Epoch 1/2
+2023-07-19 17:43:22,808:INFO: - Train metrics: loss: 0.000
+2023-07-19 17:47:32,156:INFO: Loading the datasets...
+2023-07-19 17:47:32,445:INFO: - done.
+2023-07-19 17:47:33,319:INFO: Starting training for 2 epoch(s)
+2023-07-19 17:47:33,319:INFO: Epoch 1/2
+2023-07-19 17:49:32,003:INFO: - Train metrics: loss: 0.00028
+2023-07-19 17:49:36,690:INFO: - Eval metrics : loss: 0.00034
+2023-07-19 17:49:36,706:INFO: - Found new best accuracy
+2023-07-19 17:49:36,707:INFO: Epoch 2/2
+2023-07-19 17:51:35,250:INFO: - Train metrics: loss: 0.00024
+2023-07-19 17:51:39,948:INFO: - Eval metrics : loss: 0.00034
+2023-07-19 17:53:19,402:INFO: Loading the datasets...
+2023-07-19 17:53:19,690:INFO: - done.
+2023-07-19 17:53:20,612:INFO: Starting training for 20 epoch(s)
+2023-07-19 17:53:20,612:INFO: Epoch 1/20
+2023-07-19 17:55:24,697:INFO: - Train metrics: loss: 0.00028
+2023-07-19 17:55:29,092:INFO: - Eval metrics : loss: 0.00034
+2023-07-19 17:55:29,108:INFO: - Found new best accuracy
+2023-07-19 17:55:29,108:INFO: Epoch 2/20
+2023-07-19 17:57:32,907:INFO: - Train metrics: loss: 0.00024
+2023-07-19 17:57:37,381:INFO: - Eval metrics : loss: 0.00034
+2023-07-19 17:57:37,386:INFO: Epoch 3/20
+2023-07-19 17:59:41,401:INFO: - Train metrics: loss: 0.00024
+2023-07-19 17:59:45,880:INFO: - Eval metrics : loss: 0.00033
+2023-07-19 17:59:45,880:INFO: Epoch 4/20
+2023-07-19 18:01:50,618:INFO: - Train metrics: loss: 0.00020
+2023-07-19 18:01:55,091:INFO: - Eval metrics : loss: 0.00030
+2023-07-19 18:01:55,091:INFO: Epoch 5/20
+2023-07-19 18:03:58,985:INFO: - Train metrics: loss: 0.00023
+2023-07-19 18:04:03,437:INFO: - Eval metrics : loss: 0.00029
+2023-07-19 18:04:03,437:INFO: Epoch 6/20
+2023-07-19 18:06:07,066:INFO: - Train metrics: loss: 0.00020
+2023-07-19 18:06:11,480:INFO: - Eval metrics : loss: 0.00030
+2023-07-19 18:06:11,496:INFO: Epoch 7/20
+2023-07-19 18:08:16,583:INFO: - Train metrics: loss: 0.00023
+2023-07-19 18:08:21,151:INFO: - Eval metrics : loss: 0.00028
+2023-07-19 18:08:21,151:INFO: Epoch 8/20
+2023-07-19 18:10:26,359:INFO: - Train metrics: loss: 0.00020
+2023-07-19 18:10:30,824:INFO: - Eval metrics : loss: 0.00029
+2023-07-19 18:10:30,824:INFO: Epoch 9/20
+2023-07-19 18:12:35,946:INFO: - Train metrics: loss: 0.00021
+2023-07-19 18:12:40,552:INFO: - Eval metrics : loss: 0.00028
+2023-07-19 18:12:40,552:INFO: Epoch 10/20
+2023-07-19 18:14:46,305:INFO: - Train metrics: loss: 0.00023
+2023-07-19 18:14:50,846:INFO: - Eval metrics : loss: 0.00029
+2023-07-19 18:14:50,852:INFO: Epoch 11/20
+2023-07-19 18:16:56,493:INFO: - Train metrics: loss: 0.00022
+2023-07-19 18:17:01,018:INFO: - Eval metrics : loss: 0.00028
+2023-07-19 18:17:01,033:INFO: Epoch 12/20
+2023-07-19 18:19:06,679:INFO: - Train metrics: loss: 0.00021
+2023-07-19 18:19:11,167:INFO: - Eval metrics : loss: 0.00030
+2023-07-19 18:19:11,183:INFO: Epoch 13/20
+2023-07-19 18:21:16,811:INFO: - Train metrics: loss: 0.00021
+2023-07-19 18:21:21,405:INFO: - Eval metrics : loss: 0.00030
+2023-07-19 18:21:21,405:INFO: Epoch 14/20
+2023-07-19 18:23:27,029:INFO: - Train metrics: loss: 0.00024
+2023-07-19 18:23:31,513:INFO: - Eval metrics : loss: 0.00029
+2023-07-19 18:23:31,513:INFO: Epoch 15/20
+2023-07-19 18:25:36,980:INFO: - Train metrics: loss: 0.00022
+2023-07-19 18:25:41,583:INFO: - Eval metrics : loss: 0.00030
+2023-07-19 18:25:41,590:INFO: Epoch 16/20
+2023-07-19 18:27:47,516:INFO: - Train metrics: loss: 0.00022
+2023-07-19 18:27:51,994:INFO: - Eval metrics : loss: 0.00029
+2023-07-19 18:27:51,994:INFO: Epoch 17/20
+2023-07-19 18:29:57,785:INFO: - Train metrics: loss: 0.00021
+2023-07-19 18:30:02,350:INFO: - Eval metrics : loss: 0.00028
+2023-07-19 18:30:02,350:INFO: Epoch 18/20
+2023-07-19 18:32:08,022:INFO: - Train metrics: loss: 0.00020
+2023-07-19 18:32:12,493:INFO: - Eval metrics : loss: 0.00029
+2023-07-19 18:32:12,493:INFO: Epoch 19/20
+2023-07-19 18:34:18,139:INFO: - Train metrics: loss: 0.00022
+2023-07-19 18:34:22,664:INFO: - Eval metrics : loss: 0.00030
+2023-07-19 18:34:22,664:INFO: Epoch 20/20
+2023-07-19 18:36:28,277:INFO: - Train metrics: loss: 0.00021
+2023-07-19 18:36:32,732:INFO: - Eval metrics : loss: 0.00029
+2023-07-21 08:58:33,834:INFO: Loading the datasets...
+2023-07-21 08:58:34,209:INFO: - done.
+2023-07-21 08:58:35,098:INFO: Starting training for 20 epoch(s)
+2023-07-21 08:58:35,098:INFO: Epoch 1/20
+2023-07-21 09:00:49,424:INFO: - Train metrics: loss: 0.01633
+2023-07-21 09:00:53,834:INFO: - Eval metrics : loss: 1904016870629859328.00000
+2023-07-21 09:00:53,849:INFO: - Found new best accuracy
+2023-07-21 09:00:53,849:INFO: Epoch 2/20
+2023-07-21 09:03:08,227:INFO: - Train metrics: loss: 0.00272
+2023-07-21 09:03:12,712:INFO: - Eval metrics : loss: 35753631209124208640.00000
+2023-07-21 09:03:12,727:INFO: - Found new best accuracy
+2023-07-21 09:03:12,727:INFO: Epoch 3/20
+2023-07-21 09:05:28,479:INFO: - Train metrics: loss: 0.00324
+2023-07-21 09:05:33,050:INFO: - Eval metrics : loss: 121972572072382496768.00000
+2023-07-21 09:05:33,066:INFO: - Found new best accuracy
+2023-07-21 09:05:33,066:INFO: Epoch 4/20
+2023-07-21 09:07:49,165:INFO: - Train metrics: loss: 0.00259
+2023-07-21 09:07:53,737:INFO: - Eval metrics : loss: 13281042083058325504.00000
+2023-07-21 09:07:53,737:INFO: Epoch 5/20
+2023-07-21 09:10:10,038:INFO: - Train metrics: loss: 0.00282
+2023-07-21 09:10:14,628:INFO: - Eval metrics : loss: 7727657826246725730304.00000
+2023-07-21 09:10:14,628:INFO: - Found new best accuracy
+2023-07-21 09:10:14,643:INFO: Epoch 6/20
+2023-07-21 09:12:30,962:INFO: - Train metrics: loss: 0.00224
+2023-07-21 09:12:35,481:INFO: - Eval metrics : loss: 351252171083781760.00000
+2023-07-21 09:12:35,481:INFO: Epoch 7/20
+2023-07-21 09:14:51,581:INFO: - Train metrics: loss: 0.00218
+2023-07-21 09:14:56,100:INFO: - Eval metrics : loss: 29139672082690787508224.00000
+2023-07-21 09:14:56,115:INFO: - Found new best accuracy
+2023-07-21 09:14:56,115:INFO: Epoch 8/20
+2023-07-21 09:17:12,156:INFO: - Train metrics: loss: 0.00168
+2023-07-21 09:17:16,585:INFO: - Eval metrics : loss: 74657287664206053376.00000
+2023-07-21 09:17:16,601:INFO: Epoch 9/20
+2023-07-21 09:19:32,898:INFO: - Train metrics: loss: 0.00234
+2023-07-21 09:19:37,391:INFO: - Eval metrics : loss: 5641813376808048640.00000
+2023-07-21 09:19:37,391:INFO: Epoch 10/20
+2023-07-21 09:21:53,580:INFO: - Train metrics: loss: 0.00213
+2023-07-21 09:21:58,043:INFO: - Eval metrics : loss: 6590180224236966117376.00000
+2023-07-21 09:21:58,043:INFO: Epoch 11/20
+2023-07-21 09:24:14,262:INFO: - Train metrics: loss: 0.00242
+2023-07-21 09:24:18,758:INFO: - Eval metrics : loss: 21988202775982896.00000
+2023-07-21 09:24:18,774:INFO: Epoch 12/20
+2023-07-21 09:26:34,941:INFO: - Train metrics: loss: 0.00175
+2023-07-21 09:26:39,399:INFO: - Eval metrics : loss: 2333501267294749696.00000
+2023-07-21 09:26:39,414:INFO: Epoch 13/20
+2023-07-21 09:28:55,009:INFO: - Train metrics: loss: 0.00355
+2023-07-21 09:28:59,584:INFO: - Eval metrics : loss: 31171828156127244288.00000
+2023-07-21 09:28:59,599:INFO: Epoch 14/20
+2023-07-21 09:31:15,082:INFO: - Train metrics: loss: 0.00198
+2023-07-21 09:31:19,610:INFO: - Eval metrics : loss: 871045309030722304.00000
+2023-07-21 09:31:19,610:INFO: Epoch 15/20
+2023-07-21 09:33:35,224:INFO: - Train metrics: loss: 0.00176
+2023-07-21 09:33:39,666:INFO: - Eval metrics : loss: 170030398705203520.00000
+2023-07-21 09:33:39,682:INFO: Epoch 16/20
+2023-07-21 09:35:55,910:INFO: - Train metrics: loss: 0.00199
+2023-07-21 09:36:00,433:INFO: - Eval metrics : loss: 364874828962685760.00000
+2023-07-21 09:36:00,433:INFO: Epoch 17/20
+2023-07-21 09:38:16,747:INFO: - Train metrics: loss: 0.00191
+2023-07-21 09:38:21,180:INFO: - Eval metrics : loss: 77051882539739217920.00000
+2023-07-21 09:38:21,196:INFO: Epoch 18/20
+2023-07-21 09:40:37,277:INFO: - Train metrics: loss: 0.00131
+2023-07-21 09:40:41,854:INFO: - Eval metrics : loss: 2512000645045293568.00000
+2023-07-21 09:40:41,854:INFO: Epoch 19/20
+2023-07-21 09:42:58,111:INFO: - Train metrics: loss: 0.00344
+2023-07-21 09:43:02,567:INFO: - Eval metrics : loss: 271230460530487936.00000
+2023-07-21 09:43:02,567:INFO: Epoch 20/20
+2023-07-21 09:45:18,766:INFO: - Train metrics: loss: 0.00255
+2023-07-21 09:45:23,275:INFO: - Eval metrics : loss: 71719116350390120.00000
+2023-07-21 13:02:41,414:INFO: Loading the datasets...
+2023-07-21 13:02:41,695:INFO: - done.
+2023-07-21 13:02:42,596:INFO: Starting training for 20 epoch(s)
+2023-07-21 13:02:42,596:INFO: Epoch 1/20
+2023-07-21 13:04:53,594:INFO: - Train metrics: loss: 0.01633
+2023-07-21 13:04:58,758:INFO: - Eval metrics : loss: 1904016870629859328.00000
+2023-07-21 13:04:58,773:INFO: - Found new best accuracy
+2023-07-21 13:04:58,773:INFO: Epoch 2/20
+2023-07-21 13:07:10,034:INFO: - Train metrics: loss: 0.00272
+2023-07-21 13:07:15,164:INFO: - Eval metrics : loss: 35753631209124208640.00000
+2023-07-21 13:07:15,180:INFO: - Found new best accuracy
+2023-07-21 13:07:15,180:INFO: Epoch 3/20
+2023-07-21 13:07:38,840:INFO: Loading the datasets...
+2023-07-21 13:07:39,121:INFO: - done.
+2023-07-21 13:07:39,996:INFO: Starting training for 20 epoch(s)
+2023-07-21 13:07:39,996:INFO: Epoch 1/20
+2023-07-21 13:09:44,477:INFO: - Train metrics: loss: 0.01633
+2023-07-21 13:09:49,818:INFO: - Eval metrics : loss: 1904016870629859328.00000
+2023-07-21 13:09:49,834:INFO: - Found new best accuracy
+2023-07-21 13:09:49,834:INFO: Epoch 2/20
+2023-07-21 13:11:53,573:INFO: - Train metrics: loss: 0.00272
+2023-07-21 13:11:58,936:INFO: - Eval metrics : loss: 35753631209124208640.00000
+2023-07-21 13:11:58,952:INFO: - Found new best accuracy
+2023-07-21 13:11:58,952:INFO: Epoch 3/20
+2023-07-21 13:14:05,475:INFO: - Train metrics: loss: 0.00324
+2023-07-21 13:14:10,963:INFO: - Eval metrics : loss: 121972572072382496768.00000
+2023-07-21 13:14:10,979:INFO: - Found new best accuracy
+2023-07-21 13:14:10,979:INFO: Epoch 4/20
+2023-07-21 13:16:18,060:INFO: - Train metrics: loss: 0.00259
+2023-07-21 13:16:23,609:INFO: - Eval metrics : loss: 13281042083058325504.00000
+2023-07-21 13:16:23,609:INFO: Epoch 5/20
+2023-07-21 13:19:35,648:INFO: Loading the datasets...
+2023-07-21 13:19:35,930:INFO: - done.
+2023-07-21 13:19:36,830:INFO: Starting training for 20 epoch(s)
+2023-07-21 13:19:36,830:INFO: Epoch 1/20
+2023-07-21 13:19:50,123:INFO: Loading the datasets...
+2023-07-21 13:19:50,420:INFO: - done.
+2023-07-21 13:19:51,304:INFO: Starting training for 20 epoch(s)
+2023-07-21 13:19:51,304:INFO: Epoch 1/20
+2023-07-21 13:21:05,512:INFO: Loading the datasets...
+2023-07-21 13:21:05,809:INFO: - done.
+2023-07-21 13:21:06,678:INFO: Starting training for 20 epoch(s)
+2023-07-21 13:21:06,678:INFO: Epoch 1/20
+2023-07-21 13:27:21,956:INFO: Loading the datasets...
+2023-07-21 13:27:22,252:INFO: - done.
+2023-07-21 13:27:23,153:INFO: Starting training for 20 epoch(s)
+2023-07-21 13:27:23,153:INFO: Epoch 1/20
+2023-07-21 13:29:07,835:INFO: Loading the datasets...
+2023-07-21 13:29:08,135:INFO: - done.
+2023-07-21 13:29:09,047:INFO: Starting training for 20 epoch(s)
+2023-07-21 13:29:09,047:INFO: Epoch 1/20
+2023-07-21 13:31:22,113:INFO: - Train metrics: loss: 0.01633
+2023-07-21 13:31:26,554:INFO: - Eval metrics : loss: 1904016870629859328.00000
+2023-07-21 13:31:26,554:INFO: - Found new best accuracy
+2023-07-21 13:31:26,554:INFO: Epoch 2/20
+2023-07-21 13:35:21,325:INFO: Loading the datasets...
+2023-07-21 13:35:21,609:INFO: - done.
+2023-07-21 13:35:22,515:INFO: Starting training for 2 epoch(s)
+2023-07-21 13:35:22,515:INFO: Epoch 1/2
+2023-07-21 13:37:36,158:INFO: - Train metrics: loss: 0.01633
+2023-07-21 13:37:41,124:INFO: - Eval metrics : loss: 1904016870629859328.00000
+2023-07-21 13:37:41,139:INFO: - Found new best accuracy
+2023-07-21 13:37:41,139:INFO: Epoch 2/2
+2023-07-21 13:38:46,933:INFO: Loading the datasets...
+2023-07-21 13:38:47,214:INFO: - done.
+2023-07-21 13:38:48,089:INFO: Starting training for 20 epoch(s)
+2023-07-21 13:38:48,089:INFO: Epoch 1/20
+2023-07-21 13:40:59,383:INFO: - Train metrics: loss: 0.01633
+2023-07-21 13:41:04,389:INFO: - Eval metrics : loss: 1904016870629859328.00000
+2023-07-21 13:41:04,389:INFO: - Found new best accuracy
+2023-07-21 13:41:04,405:INFO: Epoch 2/20
+2023-07-21 13:43:15,473:INFO: - Train metrics: loss: 0.00272
+2023-07-21 13:43:20,343:INFO: - Eval metrics : loss: 35753631209124208640.00000
+2023-07-21 13:43:20,359:INFO: - Found new best accuracy
+2023-07-21 13:43:20,359:INFO: Epoch 3/20
+2023-07-21 13:45:32,627:INFO: - Train metrics: loss: 0.00324
+2023-07-21 13:45:37,544:INFO: - Eval metrics : loss: 121972572072382496768.00000
+2023-07-21 13:45:37,560:INFO: - Found new best accuracy
+2023-07-21 13:45:37,560:INFO: Epoch 4/20
+2023-07-21 13:47:50,211:INFO: - Train metrics: loss: 0.00259
+2023-07-21 13:47:54,960:INFO: - Eval metrics : loss: 13281042083058325504.00000
+2023-07-21 13:47:54,960:INFO: Epoch 5/20
+2023-07-21 13:50:07,940:INFO: - Train metrics: loss: 0.00282
+2023-07-21 13:50:12,821:INFO: - Eval metrics : loss: 7727657826246725730304.00000
+2023-07-21 13:50:12,836:INFO: - Found new best accuracy
+2023-07-21 13:50:12,836:INFO: Epoch 6/20
+2023-07-21 13:52:25,767:INFO: - Train metrics: loss: 0.00224
+2023-07-21 13:52:30,728:INFO: - Eval metrics : loss: 351252171083781760.00000
+2023-07-21 13:52:30,734:INFO: Epoch 7/20
+2023-07-21 13:54:44,166:INFO: - Train metrics: loss: 0.00218
+2023-07-21 13:54:49,138:INFO: - Eval metrics : loss: 29139672082690787508224.00000
+2023-07-21 13:54:49,153:INFO: - Found new best accuracy
+2023-07-21 13:54:49,153:INFO: Epoch 8/20
+2023-07-21 13:57:03,014:INFO: - Train metrics: loss: 0.00168
+2023-07-21 13:57:07,796:INFO: - Eval metrics : loss: 74657287664206053376.00000
+2023-07-21 13:57:07,803:INFO: Epoch 9/20
+2023-07-21 13:59:20,801:INFO: - Train metrics: loss: 0.00234
+2023-07-21 13:59:25,627:INFO: - Eval metrics : loss: 5641813376808048640.00000
+2023-07-21 13:59:25,642:INFO: Epoch 10/20
+2023-07-21 14:01:36,768:INFO: - Train metrics: loss: 0.00213
+2023-07-21 14:01:41,629:INFO: - Eval metrics : loss: 6590180224236966117376.00000
+2023-07-21 14:01:41,629:INFO: Epoch 11/20
+2023-07-21 14:03:53,566:INFO: - Train metrics: loss: 0.00242
+2023-07-21 14:03:58,596:INFO: - Eval metrics : loss: 21988202775982896.00000
+2023-07-21 14:03:58,602:INFO: Epoch 12/20
+2023-07-21 14:06:11,995:INFO: - Train metrics: loss: 0.00175
+2023-07-21 14:06:16,931:INFO: - Eval metrics : loss: 2333501267294749696.00000
+2023-07-21 14:06:16,947:INFO: Epoch 13/20
+2023-07-21 14:08:30,693:INFO: - Train metrics: loss: 0.00355
+2023-07-21 14:08:35,648:INFO: - Eval metrics : loss: 31171828156127244288.00000
+2023-07-21 14:08:35,648:INFO: Epoch 14/20
+2023-07-21 14:10:49,638:INFO: - Train metrics: loss: 0.00198
+2023-07-21 14:10:54,581:INFO: - Eval metrics : loss: 871045309030722304.00000
+2023-07-21 14:10:54,581:INFO: Epoch 15/20
+2023-07-21 14:13:08,323:INFO: - Train metrics: loss: 0.00176
+2023-07-21 14:13:13,273:INFO: - Eval metrics : loss: 170030398705203520.00000
+2023-07-21 14:13:13,273:INFO: Epoch 16/20
+2023-07-21 14:15:26,652:INFO: - Train metrics: loss: 0.00199
+2023-07-21 14:15:31,400:INFO: - Eval metrics : loss: 364874828962685760.00000
+2023-07-21 14:15:31,400:INFO: Epoch 17/20
+2023-07-21 14:17:44,403:INFO: - Train metrics: loss: 0.00191
+2023-07-21 14:17:49,262:INFO: - Eval metrics : loss: 77051882539739217920.00000
+2023-07-21 14:17:49,278:INFO: Epoch 18/20
+2023-07-21 14:20:02,356:INFO: - Train metrics: loss: 0.00131
+2023-07-21 14:20:07,256:INFO: - Eval metrics : loss: 2512000645045293568.00000
+2023-07-21 14:20:07,272:INFO: Epoch 19/20
+2023-07-21 14:22:20,230:INFO: - Train metrics: loss: 0.00344
+2023-07-21 14:22:25,193:INFO: - Eval metrics : loss: 271230460530487936.00000
+2023-07-21 14:22:25,199:INFO: Epoch 20/20
+2023-07-21 14:24:38,095:INFO: - Train metrics: loss: 0.00255
+2023-07-21 14:24:43,013:INFO: - Eval metrics : loss: 71719116350390120.00000
+2023-07-25 10:52:49,075:INFO: Loading the datasets...
+2023-07-25 10:52:49,453:INFO: - done.
+2023-07-25 10:52:50,396:INFO: Starting training for 20 epoch(s)
+2023-07-25 10:52:50,396:INFO: Epoch 1/20
+2023-07-25 10:55:06,827:INFO: - Train metrics: loss: 0.23007
+2023-07-25 10:55:12,074:INFO: - Eval metrics : loss: 0.11892
+2023-07-25 10:55:12,074:INFO: - Found new best accuracy
+2023-07-25 10:55:12,089:INFO: Epoch 2/20
+2023-07-25 10:57:28,641:INFO: - Train metrics: loss: 0.06728
+2023-07-25 10:57:34,076:INFO: - Eval metrics : loss: 0.11420
+2023-07-25 10:57:34,076:INFO: Epoch 3/20
+2023-07-25 10:59:51,914:INFO: - Train metrics: loss: 0.05181
+2023-07-25 10:59:57,016:INFO: - Eval metrics : loss: 0.06249
+2023-07-25 10:59:57,016:INFO: Epoch 4/20
+2023-07-25 11:02:15,029:INFO: - Train metrics: loss: 0.03204
+2023-07-25 11:02:20,313:INFO: - Eval metrics : loss: 0.05793
+2023-07-25 11:02:20,313:INFO: Epoch 5/20
+2023-07-25 11:04:38,164:INFO: - Train metrics: loss: 0.02856
+2023-07-25 11:04:43,455:INFO: - Eval metrics : loss: 0.05656
+2023-07-25 11:04:43,455:INFO: Epoch 6/20
+2023-07-25 11:06:59,509:INFO: - Train metrics: loss: 0.06613
+2023-07-25 11:07:04,809:INFO: - Eval metrics : loss: 0.05733
+2023-07-25 11:07:04,809:INFO: Epoch 7/20
+2023-07-25 11:09:20,719:INFO: - Train metrics: loss: 0.06807
+2023-07-25 11:09:26,020:INFO: - Eval metrics : loss: 0.05944
+2023-07-25 11:09:26,020:INFO: Epoch 8/20
+2023-07-25 11:11:42,134:INFO: - Train metrics: loss: 0.04792
+2023-07-25 11:11:47,428:INFO: - Eval metrics : loss: 0.06231
+2023-07-25 11:11:47,444:INFO: Epoch 9/20
+2023-07-25 11:14:04,065:INFO: - Train metrics: loss: 0.01351
+2023-07-25 11:14:09,297:INFO: - Eval metrics : loss: 0.06583
+2023-07-25 11:14:09,313:INFO: Epoch 10/20
+2023-07-25 11:16:26,185:INFO: - Train metrics: loss: 0.02115
+2023-07-25 11:16:31,485:INFO: - Eval metrics : loss: 0.06974
+2023-07-25 11:16:31,485:INFO: Epoch 11/20
+2023-07-25 11:18:48,170:INFO: - Train metrics: loss: 0.02976
+2023-07-25 11:18:53,392:INFO: - Eval metrics : loss: 0.07368
+2023-07-25 11:18:53,392:INFO: Epoch 12/20
+2023-07-25 11:21:09,372:INFO: - Train metrics: loss: 0.01611
+2023-07-25 11:21:14,658:INFO: - Eval metrics : loss: 0.07778
+2023-07-25 11:21:14,674:INFO: Epoch 13/20
+2023-07-25 11:23:30,625:INFO: - Train metrics: loss: 0.02547
+2023-07-25 11:23:35,910:INFO: - Eval metrics : loss: 0.08218
+2023-07-25 11:23:35,926:INFO: Epoch 14/20
+2023-07-25 11:25:51,952:INFO: - Train metrics: loss: 0.01347
+2023-07-25 11:25:57,219:INFO: - Eval metrics : loss: 0.08659
+2023-07-25 11:25:57,235:INFO: Epoch 15/20
+2023-07-25 11:28:13,383:INFO: - Train metrics: loss: 0.02601
+2023-07-25 11:28:18,432:INFO: - Eval metrics : loss: 0.09134
+2023-07-25 11:28:18,448:INFO: Epoch 16/20
+2023-07-25 11:30:34,548:INFO: - Train metrics: loss: 0.01214
+2023-07-25 11:30:39,824:INFO: - Eval metrics : loss: 0.09621
+2023-07-25 11:30:39,824:INFO: Epoch 17/20
+2023-07-25 11:32:55,907:INFO: - Train metrics: loss: 0.01244
+2023-07-25 11:33:01,176:INFO: - Eval metrics : loss: 0.10151
+2023-07-25 11:33:01,192:INFO: Epoch 18/20
+2023-07-25 11:35:17,371:INFO: - Train metrics: loss: 0.02300
+2023-07-25 11:35:22,634:INFO: - Eval metrics : loss: 0.10717
+2023-07-25 11:35:22,634:INFO: Epoch 19/20
+2023-07-25 11:37:38,800:INFO: - Train metrics: loss: 0.02679
+2023-07-25 11:37:44,074:INFO: - Eval metrics : loss: 0.11424
+2023-07-25 11:37:44,074:INFO: Epoch 20/20
+2023-07-25 11:40:00,337:INFO: - Train metrics: loss: 0.02930
+2023-07-25 11:40:05,589:INFO: - Eval metrics : loss: 0.12535
+2023-07-25 11:40:05,604:INFO: - Found new best accuracy
