@@ -1,9 +1,10 @@
 {
-    "learning_rate": 1e-4,
-    "batch_size": 32,
-    "num_epochs": 20,
+    "learning_rate": 1e-5,
+    "batch_size": 16,
+    "num_epochs": 12,
     "dropout_rate":0.8,
-    "num_channels": 6,
-    "save_summary_steps": 100,
-    "num_workers": 1
+    "num_channels": 5,
+    "save_summary_steps": 12,
+    "num_workers": 1,
+    "regularizer": 1e-7
 }

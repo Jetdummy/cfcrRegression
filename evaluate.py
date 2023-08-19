@@ -20,7 +20,7 @@ parser.add_argument('--restore_file', default='best', help="name of the file in 
                      containing weights to load")
 
 
-def evaluate(model, loss_fn, dataloader, metrics, params):
+def evaluate(model, loss_fn, dataloader, metrics, params, train):
     """Evaluate the model on `num_steps` batches.
 
     Args:
@@ -37,28 +37,99 @@ def evaluate(model, loss_fn, dataloader, metrics, params):
 
     # summary for current eval loop
     summ = []
-    y_true = np.empty((0))
+    Vy_true = np.empty((0))
+    Yr_true = np.empty((0))
     y_pred = np.empty((1, 2))
     Vy_pred = np.empty((0))
+    Yr_pred = np.empty((0))
+    Cf_lookup = np.empty((0))
+    Cr_lookup = np.empty((0))
+    Vy_lookup = np.empty((0))
+    Yr_lookup = np.empty((0))
 
+    first = True
 
     # compute metrics over the dataset
     for data_batch, labels_batch, all_batch in dataloader:
 
+        if first and not train:
+            Vyt = all_batch[0][-1][6]
+            Yrt = all_batch[0][-1][3]
+            Vy = all_batch[0][-1][6].item()
+            Yr = all_batch[0][-1][3].item()
+            #model.init_hidden(data_batch.size(1))
+            first = False
+        if train:
+            Vyt = all_batch[0][-1][6]
+            Yrt = all_batch[0][-1][3]
+
+
+
+        losses_vy = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+        losses_yr = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+
+        predict_Vy = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+        predict_Yr = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+
+        output_batch = model(data_batch)
+
+        for j, (output, label, all) in enumerate(zip(output_batch, labels_batch, all_batch)):
+            if params.cuda:
+                output, label, all = output.cuda(non_blocking=True), label.cuda(non_blocking=True), all.cuda(
+                    non_blocking=True)
+
+            loss_vy, loss_yr, Vyt, Yrt = loss_fn(output, label, all, Vyt, Yrt)
+
+            #losses_vy[j] = (Vyt - label[1]) ** 2
+            #losses_yr[j] = (Yrt - label[0]) ** 2
+            losses_vy[j] = loss_vy
+            losses_yr[j] = loss_yr
+
+            Vyt = Vyt.detach()
+            Yrt = Yrt.detach()
+
+            predict_Vy[j] = Vyt
+            predict_Yr[j] = Yrt
+
+        loss_vy = torch.mean(losses_vy, dtype=torch.float64)
+        loss_yr = torch.mean(losses_yr, dtype=torch.float64)
+
+        loss = 0.6 * loss_vy + 0.4 * loss_yr
+        #loss = loss_vy
+        '''
         # move to GPU if available
         if params.cuda:
-            data_batch, labels_batch = data_batch.cuda(
-                non_blocking=True), labels_batch.cuda(non_blocking=True)
+            data_batch, labels_batch, all_batch = data_batch.cuda(
+                non_blocking=True), labels_batch.cuda(non_blocking=True), all_batch.cuda(non_blocking=True)
         # fetch the next evaluation batch
         data_batch, labels_batch, all_batch = Variable(data_batch), Variable(labels_batch), Variable(all_batch)
 
+        if first and not train :
+            predict_Vy = all_batch[0][-1][6]
+            predict_Yr = all_batch[0][-1][3]
+            first = False
+        if train :
+            predict_Vy = all_batch[0][-1][6]
+            predict_Yr = all_batch[0][-1][3]
         # compute model output
         output_batch = model(data_batch)
-        loss, result = loss_fn(output_batch, labels_batch, all_batch, False)
-        print(loss)
+
+        loss_vy, loss_yr, predict_Vy, predict_Yr = loss_fn(output_batch, labels_batch, all_batch, train, predict_Vy, predict_Yr)
+
         # extract data from torch Variable, move to cpu, convert to numpy arrays
         output_batch = output_batch.data.cpu().numpy()
         labels_batch = labels_batch.data.cpu().numpy()
+
+        loss = loss_vy * 0.6 + loss_yr * 0.4
+
+        loss_vy = loss_vy.detach()
+        loss_yr = loss_yr.detach()
+        '''
+        output_batch = output_batch.detach()
+
+        loss_vy = loss_vy.detach()
+        loss_yr = loss_yr.detach()
+
 
         if output_batch.ndim == 1:
             output_batch = output_batch.reshape(1, 2)
@@ -66,13 +137,28 @@ def evaluate(model, loss_fn, dataloader, metrics, params):
             squeezed_array = np.squeeze(output_batch)
             output_batch = squeezed_array.reshape((-1, 2))
 
-        # Concat output and label
-        y_true = np.concatenate((y_true, labels_batch), axis=0)
-        y_pred = np.concatenate((y_pred, output_batch), axis=0)
-        Vy_pred = np.concatenate((Vy_pred, result), axis=0)
+
+        if not train:
+            with torch.no_grad():
+                # Concat output and label
+                Vy_true = np.concatenate((Vy_true, labels_batch[:, 1]), axis=0)
+                Yr_true = np.concatenate((Yr_true, labels_batch[:, 0]), axis=0)
+                y_pred = np.concatenate((y_pred, output_batch), axis=0)
+                Vy_pred = np.append(Vy_pred, predict_Vy.cpu().detach().numpy())
+                Yr_pred = np.append(Yr_pred, predict_Yr.cpu().detach().numpy())
+                cf = utils.lookup_table_cf(all_batch[0, 0, 1])
+                cr = utils.lookup_table_cr(all_batch[0, 0, 1])
+                Vy = utils.bicycle_Vy2(cf, cr, all_batch[0, 0, 4], Vy, Yr, all_batch[0, 0, 2])
+                Yr = utils.bicycle_yr2(cf, cr, all_batch[0, 0, 4], Vy, Yr, all_batch[0, 0, 2])
+                Cf_lookup = np.append(Cf_lookup, cf)
+                Cr_lookup = np.append(Cr_lookup, cr)
+                Vy_lookup = np.append(Vy_lookup, Vy)
+                Yr_lookup = np.append(Yr_lookup, Yr)
+
+
 
         # compute all metrics on this batch
-        summary_batch = {metric: metrics[metric](output_batch, labels_batch)
+        summary_batch = {metric: metrics[metric](loss_vy, loss_yr)
                          for metric in metrics}
         summary_batch['loss'] = loss.item()
         summ.append(summary_batch)
@@ -83,7 +169,7 @@ def evaluate(model, loss_fn, dataloader, metrics, params):
     metrics_string = " ; ".join("{}: {:05.5f}".format(k, v)
                                 for k, v in metrics_mean.items())
     logging.info("- Eval metrics : " + metrics_string)
-    return metrics_mean, y_true, Vy_pred, y_pred
+    return metrics_mean, Vy_true, Vy_pred, Yr_true, Yr_pred, y_pred, Cf_lookup, Cr_lookup, Vy_lookup, Yr_lookup
 
 
 if __name__ == '__main__':
@@ -98,7 +184,7 @@ if __name__ == '__main__':
     params = utils.Params(json_path)
 
     # use GPU if available
-    params.cuda = torch.cuda.is_available()     # use GPU is available
+    params.cuda = False #torch.cuda.is_available()     # use GPU is available
 
     # Set the random seed for reproducible experiments
     torch.manual_seed(230)
@@ -112,7 +198,7 @@ if __name__ == '__main__':
     logging.info("Creating the dataset...")
 
     # Choose input features in data
-    selected_indices = [8, 9, 10, 11, 12, 13]
+    selected_indices = [7, 8, 9, 10, 11]
 
     # Set input number of columns
     window = 1
@@ -126,11 +212,12 @@ if __name__ == '__main__':
 
     # Define the model
     model = net.FourLayerModel(params).cuda() if params.cuda else net.FourLayerModel(params)
+    #model = net.LSTMRegression(params).cuda() if params.cuda else net.LSTMRegression(params)
 
     # Use parameters as float 64
     model.double()
 
-    loss_fn = net.MSE_loss_fn
+    loss_fn = net.loss_vy_yr
     metrics = net.metrics
 
     logging.info("Starting evaluation")
@@ -140,9 +227,10 @@ if __name__ == '__main__':
         args.model_dir, args.restore_file + '.pth.tar'), model)
 
     # Evaluate
-    test_metrics, y_true, Vy_pred, y_pred = evaluate(model, loss_fn, test_dl, metrics, params)
-    utils.compare_as_plot(y_true, Vy_pred)
-    utils.CfCr_as_plot(y_pred)
+    test_metrics, Vy_true, Vy_pred, Yr_true, Yr_pred, y_pred, Cf_look, Cr_look, Vy_look, Yr_look = evaluate(model, loss_fn, test_dl, metrics, params, False)
+    utils.compare_as_plot_vy(Vy_true, Vy_pred, Vy_look)
+    utils.compare_as_plot_yr(Yr_true, Yr_pred, Yr_look)
+    utils.CfCr_as_plot(y_pred, Cf_look, Cr_look)
     save_path = os.path.join(
         args.model_dir, "metrics_test_{}.json".format(args.restore_file))
     utils.save_dict_to_json(test_metrics, save_path)

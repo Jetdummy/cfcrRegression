@@ -9,11 +9,14 @@ import torch
 import torch.optim as optim
 from torch.autograd import Variable
 from tqdm import tqdm
+from torch.autograd import gradcheck
 
 import utils
 import model.net as net
 import model.data_loader as data_loader
 from evaluate import evaluate
+
+from torchviz import make_dot
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--data_dir', default='data/pidn',
@@ -45,44 +48,134 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params):
     summ = []
     loss_avg = utils.RunningAverage()
 
+    torch.autograd.set_detect_anomaly(True)
+
     # Use tqdm for progress bar
     with tqdm(total=len(dataloader)) as t:
-        for i, (train_batch, labels_batch, batch_data) in enumerate(dataloader):
-            # move to GPU if available
-            if params.cuda:
-                train_batch, labels_batch = train_batch.cuda(
-                    non_blocking=True), labels_batch.cuda(non_blocking=True)
+        for i, (train_batch, labels_batch, all_batch) in enumerate(dataloader):
+            #if params.cuda:
+            #    train_batch, labels_batch, all_batch = train_batch.cuda(non_blocking=True), labels_batch.cuda(non_blocking=True), all_batch.cuda(non_blocking=True)
+
             # convert to torch Variables
-            train_batch, labels_batch, batch_data = Variable(
-                train_batch), Variable(labels_batch), Variable(batch_data)
+            #train_batch, labels_batch, all_batch = Variable(train_batch), Variable(labels_batch), Variable(all_batch)
 
-            # compute model output and loss
-            output_batch = model(train_batch)
-            '''
-            Cf = output_batch[:, 0, 0]
-            Cr = output_batch[:, 0, 1]
-            Vx = batch_data[:, -1, 2]
-            Vy = batch_data[:, -1, 6]
-            Yawrate = batch_data[:, -1, 3]
-            Sas = batch_data[:, -1, 5]
-            '''
-            loss, _ = loss_fn(output_batch, labels_batch, batch_data, True)
-
-            # clear previous gradients, compute gradients of all variables wrt loss
             optimizer.zero_grad()
-            loss.backward()
+
+            Vyt = all_batch[0][-1][6]
+            Yrt = all_batch[0][-1][3]
+
+            losses_vy = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+            losses_yr = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+
+            vys = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+            yrs = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+            #print(train_batch.size())
+
+            #model.init_hidden(train_batch.size(1))
+
+            output_batch = model(train_batch)
+
+
+            for j, (output, label, all) in enumerate(zip(output_batch, labels_batch, all_batch)) :
+                # move to GPU if available
+                #if params.cuda:
+                #    train, label, all = train.cuda(non_blocking=True), label.cuda(non_blocking=True), all.cuda(non_blocking=True)
+
+                # convert to torch Variables
+                #train, label, all = Variable(train), Variable(label), Variable(all)
+                #tr.requires_grad_(True)
+                # compute model output and loss
+                #output = model(tr)
+
+                #print("output", output.grad)
+                #temp_matrix = torch.ones(1, 2)
+                #all[0, 6], all[0, 3] Vyt, Yrt
+                loss_vy, loss_yr, Vyt, Yrt = loss_fn(output, label, all, Vyt, Yrt)
+                #print("loss_vy", gradcheck(loss_fn, (output, label, all, Vyt, Yrt)))
+                #print("loss_vy", loss_vy.grad)
+                #a = torch.autograd.grad(output, train, temp_matrix, retain_graph=True)[0]
+                #print(a.shape)
+                #print(a)
+
+                #loss_vy = (Vyt - label[1]) ** 2
+                #loss_yr = (Yrt - label[0]) ** 2
+
+                #vys[j] = Vyt
+                #yrs[j] = Yrt
+                #loss = 0.6 * loss_vy + 0.4 * loss_yr
+                #loss.backward(retain_graph=True)
+                #loss_vy.backward(retain_graph=True)
+                #loss_yr.backward(retain_graph=True)
+
+                losses_vy[j] = loss_vy
+                losses_yr[j] = loss_yr
+                Vyt = Vyt.detach()
+                Yrt = Yrt.detach()
+                '''
+                Cf = output_batch[:, 0, 0]
+                Cr = output_batch[:, 0, 1]
+                Vx = batch_data[:, -1, 2]
+                Vy = batch_data[:, -1, 6]
+                Yawrate = batch_data[:, -1, 3]
+                Sas = batch_data[:, -1, 5]
+                '''
+
+            #loss_vy = loss_fn(vys, labels_batch[:, 1])
+            #loss_yr = loss_fn(yrs, labels_batch[:, 0])
+            loss_vy_total = torch.mean(losses_vy, dtype=torch.float64)
+            loss_yr_total = torch.mean(losses_yr, dtype=torch.float64)
+
+            loss_yr_total.backward(retain_graph=True)
+            loss_yr_total.backward(retain_graph=True)
+
+            loss = 0.6 * loss_vy_total + 0.4 * loss_yr_total
+            #loss = loss_vy_total
+            #print(loss)
+
+
+            #loss.backward()
 
             # performs updates using calculated gradients
             optimizer.step()
 
+            #utils.plot_grad_flow(model.named_parameters())
+
+            #optimizer.zero_grad()
+            '''
+                # Manually update the parameters using gradients
+                with torch.no_grad():
+                    t -= optimizer.param_groups[0]['lr'] * t.grad
+
+                    # Manually zero the gradients after updating the parameters
+                    t.grad.zero_()
+            
+            loss_vy, loss_yr, _, _ = loss_fn(output, l, a, True, Vyt, Yrt)
+
+            loss = 0.6*loss_vy + 0.4*loss_yr
+            # clear previous gradients, compute gradients of all variables wrt loss
+            optimizer.zero_grad()
+            loss.requires_grad_(True)
+            loss.backward()
+            '''
+
+
             # Evaluate summaries only once in a while
             if i % params.save_summary_steps == 0:
                 # extract data from torch Variable, move to cpu, convert to numpy arrays
-                output_batch = output_batch.data.cpu().numpy()
-                labels_batch = labels_batch.data.cpu().numpy()
+                #print("output", output)
+                #print("all", all[0, 4], all[0, 2])
+                #print(losses_vy[-1])
+                #print(Vyt, Yrt, label[1])
+                #output_batch = output_batch.data.cpu().numpy()
+                #labels_batch = labels_batch.data.cpu().numpy()
+                loss_vy_total = loss_vy_total.detach().numpy()
+                loss_yr_total = loss_yr_total.detach().numpy()
+                #for p in model.parameters():
+                #    print(p)
+                #    break
 
                 # compute all metrics on this batch
-                summary_batch = {metric: metrics[metric](output_batch, labels_batch) for metric in metrics}
+                summary_batch = {metric: metrics[metric](loss_vy_total, loss_yr_total) for metric in metrics}
                 summary_batch['loss'] = loss.item()
                 summ.append(summary_batch)
 
@@ -92,10 +185,11 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params):
             t.set_postfix(loss='{:05.5f}'.format(loss_avg()))
             t.update()
 
+    utils.plot_grad_flow_now()
     # compute mean of all metrics in summary
     metrics_mean = {metric: np.mean([x[metric]
                                      for x in summ]) for metric in summ[0]}
-    metrics_string = " ; ".join("{}: {:05.5f}".format(k, v)
+    metrics_string = " ; ".join("{}: {:05.8f}".format(k, v)
                                 for k, v in metrics_mean.items())
     logging.info("- Train metrics: " + metrics_string)
 
@@ -132,7 +226,7 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer, loss_
         train(model, optimizer, loss_fn, train_dataloader, metrics, params)
 
         # Evaluate for one epoch on validation set
-        val_metrics, _, _, _ = evaluate(model, loss_fn, val_dataloader, metrics, params)
+        val_metrics, _, _, _, _, _, _, _, _, _ = evaluate(model, loss_fn, val_dataloader, metrics, params, True)
 
         val_acc = val_metrics['loss']
         is_best = val_acc >= best_val_acc
@@ -169,8 +263,8 @@ if __name__ == '__main__':
     params = utils.Params(json_path)
 
     # use GPU if available
-    params.cuda = torch.cuda.is_available()
-    print("Is cuda available? " + str(torch.cuda.is_available()))
+    params.cuda = False#torch.cuda.is_available()
+    #print("Is cuda available? " + str(torch.cuda.is_available()))
     # Set the random seed for reproducible experiments
     torch.manual_seed(230)
     if params.cuda:
@@ -183,8 +277,8 @@ if __name__ == '__main__':
     logging.info("Loading the datasets...")
 
     # Choose input features in data
-    selected_indices = [8, 9, 10, 11, 12, 13]
-
+    selected_indices = [7, 8, 9, 10, 11]
+    # 8-12, 7-11
     # Set input number of columns
     window = 1
     shift = 1
@@ -199,18 +293,19 @@ if __name__ == '__main__':
 
     # Define the model
     model = net.FourLayerModel(params).cuda() if params.cuda else net.FourLayerModel(params)
+    #model = net.LSTMRegression(params).cuda() if params.cuda else net.LSTMRegression(params)
 
     # Use parameters as float 64
     model.double()
 
     # Define the optimizer
-    optimizer = optim.Adam(model.parameters(), lr=params.learning_rate)
+    optimizer = optim.Adam(model.parameters(), lr=params.learning_rate, weight_decay=params.regularizer)
+    #, weight_decay=params.regularizer
 
     # fetch loss function and metrics
-    loss_fn = net.MSE_loss_fn
+    loss_fn = net.loss_vy_yr
     metrics = net.metrics
 
-    # Train the model
     logging.info("Starting training for {} epoch(s)".format(params.num_epochs))
     train_and_evaluate(model, train_dl, val_dl, optimizer, loss_fn, metrics, params, args.model_dir,
                        args.restore_file)

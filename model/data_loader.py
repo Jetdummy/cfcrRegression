@@ -3,6 +3,8 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset, DataLoader
 
+import random
+
 
 class PIDNDataset(Dataset):
     """
@@ -19,9 +21,9 @@ class PIDNDataset(Dataset):
             shift: (int) how many shift to the next data sample
         """
         if selected_indices is None:
-            selected_indices = [8, 9, 10, 11, 12, 13]
-        # 0 Ax 1 Ay 2 Vx 3 Yawrate 4 Vy_dot 5 Steer 6 Vy_dot_RT 7 Vy_RT 8 Ax_normal 9 Ay_normal 10 Vx_normal
-        # 11 Yawrate_normal 12 Vy_dot_normal 13 Steer_normal 14 Vy_dot_RTx_normal 15 Vy_RT_normal
+            selected_indices = [0, 1, 2, 3, 4]
+        # 0 Ax[m/s2] 1 Ay[m/s2] 2 Steer[rad] 3 Yawrate[rad/s] 4 Vx[m/s] 5 Beta[rad] 6 Vy[m/s] 7 Ax_normal 8 Ay_normal
+        # 9 Steer_normal 10 Yawrate_normal 11 Vx_normal 12 Beta_normal 13 Vy_normal
         self.data_dir = data_dir
         self.window = window
         self.shift = shift
@@ -70,9 +72,9 @@ class PIDNDataset(Dataset):
         end_idx = start_idx + self.window
         selected_data = self.data[dataset_index].iloc[start_idx:end_idx, :]
         selected_data_x = self.data[dataset_index].iloc[start_idx:end_idx, self.selected_indices]
-        selected_data_y = self.data[dataset_index].iloc[end_idx+1, 7]  # 6 or 7
+        selected_data_y = self.data[dataset_index].iloc[end_idx+1, [3, 6]]  # 6 or 7
 
-        return torch.tensor(selected_data_x.to_numpy()), torch.tensor(selected_data_y), torch.tensor(selected_data.to_numpy())
+        return torch.tensor(selected_data_x.to_numpy()), torch.tensor(selected_data_y.to_numpy()), torch.tensor(selected_data.to_numpy())
 
 
 def fetch_dataloader(types, data_dir, params, selected_indices, window, shift):
@@ -95,16 +97,16 @@ def fetch_dataloader(types, data_dir, params, selected_indices, window, shift):
 
             # use the train_transformer if training data, else use eval_transformer without random flip
             if split == 'train':
-                dl = DataLoader(PIDNDataset(path, selected_indices, window, shift), batch_size=params.batch_size, shuffle=True,
+                dl = DataLoader(PIDNDataset(path, selected_indices, window, shift), batch_size=params.batch_size, shuffle=False,
                                         num_workers=params.num_workers,
                                         pin_memory=params.cuda)
+                #dl = random.sample(list(dl), len(dl))
             elif split == 'val':
                 dl = DataLoader(PIDNDataset(path, selected_indices, window, shift), batch_size=params.batch_size, shuffle=False,
                                 num_workers=params.num_workers,
                                 pin_memory=params.cuda)
             else:
-                dl = DataLoader(PIDNDataset(path, selected_indices, window, shift), batch_size=1,
-                                shuffle=False,
+                dl = DataLoader(PIDNDataset(path, selected_indices, window, shift), batch_size=1, shuffle=False,
                                 num_workers=params.num_workers,
                                 pin_memory=params.cuda)
             dataloaders[split] = dl

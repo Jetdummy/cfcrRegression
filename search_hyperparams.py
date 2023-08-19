@@ -47,8 +47,9 @@ if __name__ == "__main__":
     params = utils.Params(json_path)
 
     # Perform hypersearch over one parameter
-    learning_rates = [1e-4, 1e-3, 1e-2]
-    batch_sizes = [1, 4, 8, 16, 32, 64, 128, 256]
+    learning_rates = [1e-5, 1e-4, 1e-3, 1e-2]
+    batch_sizes = [4, 8, 16, 32, 64, 128]
+    weight_decays = [0.9, 0.09, 0.1, 0.01, 1e-2, 1e-3, 1e-4, 1e-5]
     '''
     for learning_rate in learning_rates:
         # Modify the relevant parameter in params
@@ -58,6 +59,7 @@ if __name__ == "__main__":
         job_name = "learning_rate_{}".format(learning_rate)
         launch_training_job(args.parent_dir, args.data_dir, job_name, params)
     '''
+    
     for batch_size in batch_sizes:
         # Modify the relevant parameter in params
         params.batch_size = batch_size
@@ -65,3 +67,12 @@ if __name__ == "__main__":
         # Launch job (name has to be unique)
         job_name = "batch_size_{}".format(batch_size)
         launch_training_job(args.parent_dir, args.data_dir, job_name, params)
+    '''
+    for weight_decay in weight_decays:
+        # Modify the relevant parameter in params
+        params.regularizer = weight_decay
+
+        # Launch job (name has to be unique)
+        job_name = "weight_decay_{}".format(weight_decay)
+        launch_training_job(args.parent_dir, args.data_dir, job_name, params)
+    '''

@@ -9,20 +9,148 @@ from sklearn.metrics import mean_squared_error
 import utils
 
 
+class LSTMRegression(nn.Module):
+    def __init__(self, params):
+        super(LSTMRegression, self).__init__()
+        self.num_channels = params.num_channels
+        self.hidden_size = 20
+        self.num_layers = 2
+
+        self.lstm = nn.LSTM(self.num_channels, self.hidden_size, self.num_layers, bidirectional=False, batch_first=False)
+        self.fc = nn.Linear(self.hidden_size, 2)
+
+    def init_hidden(self, batch_size):
+        # even with batch_first = True this remains same as docs
+        hidden_state = torch.zeros(self.num_layers, batch_size, self.hidden_size, dtype=torch.float64)
+        cell_state = torch.zeros(self.num_layers, batch_size, self.hidden_size, dtype=torch.float64)
+        #print(hidden_state.dtype)
+        self.hidden = (hidden_state, cell_state)
+
+    def forward(self, x):
+        #h0 = torch.zeros(self.num_layers, x.size(1), self.hidden_size).to(x.device)
+        #c0 = torch.zeros(self.num_layers, x.size(1), self.hidden_size).to(x.device)
+        #print(x.dtype)
+        out, self.hidden = self.lstm(x, self.hidden)
+        #out = self.fc(out[:, -1, :])
+        #out = torch.sigmoid(out)
+        return out
+
+
+
 class FourLayerModel(nn.Module):
     def __init__(self, params):
         self.num_channels = params.num_channels
         super(FourLayerModel, self).__init__()
         self.fc1 = nn.Linear(self.num_channels, 64)   # num_channels inputs -> 64 hidden units in the first layer
+        #self.bn1 = nn.BatchNorm1d(num_features=64)
+        self.do1 = nn.Dropout(0.5)
         self.fc2 = nn.Linear(64, 128) # 64 hidden units -> 128 hidden units in the second layer
-        self.fc3 = nn.Linear(128, 64) # 128 hidden units -> 64 hidden units in the third layer
-        self.fc4 = nn.Linear(64, 2)   # 64 hidden units -> 2 output in the fourth layer
+        #self.bn2 = nn.BatchNorm1d(num_features=128)
+        self.do2 = nn.Dropout(0.3)
+        self.fc3 = nn.Linear(128, 128) # 128 hidden units -> 64 hidden units in the third layer
+        #self.bn3 = nn.BatchNorm1d(num_features=128)
+        self.do3 = nn.Dropout(0.2)
+        self.fc4 = nn.Linear(128, 64)  # 128 hidden units -> 64 hidden units in the third layer
+        #self.bn4 = nn.BatchNorm1d(num_features=64)
+        self.do4 = nn.Dropout(0.2)
+        self.fc5 = nn.Linear(64, 2)   # 64 hidden units -> 2 output in the fourth layer
+        self.double()
+        self.activation = torch.nn.LeakyReLU()
+        #torch.nn.init.xavier_uniform_(self.fc1.weight)
+        #torch.nn.init.xavier_uniform_(self.fc2.weight)
+        #torch.nn.init.xavier_uniform_(self.fc3.weight)
+        #torch.nn.init.xavier_uniform_(self.fc4.weight)
 
     def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        x = torch.relu(self.fc2(x))
-        x = torch.relu(self.fc3(x))
+        '''
+        x = F.relu(self.bn1(self.fc1(x)))
+        x = F.relu(self.bn2(self.fc2(x)))
+        x = F.relu(self.bn3(self.fc3(x)))
         x = self.fc4(x)
+        '''
+        '''
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = F.relu(self.fc3(x))
+        x = F.sigmoid(self.fc4(x))
+        #x = self.fc4(x)
+        '''
+        #torch.nn.ELU()
+        #torch.nn.ReLU()
+        #torch.nn.LeakyReLU()
+
+        x = self.fc1(x)
+        x = self.activation(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+        x = self.do1(x)
+        x = self.fc2(x)
+        x = self.activation(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+        x = self.do2(x)
+        x = self.fc3(x)
+        x = self.activation(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+        x = self.do3(x)
+        x = self.fc4(x)
+        x = self.activation(x)
+        x = self.do4(x)
+        x = self.fc5(x)
+
+        x = torch.sigmoid(x)
+        '''
+        if x.size()[0] == 1:
+            x = self.fc1(x)
+            #x = x.squeeze(1)
+            #x = self.bn1(x)
+
+            x = torch.relu(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+            x = self.do1(x)
+            x = self.fc2(x)
+
+            #x = self.bn2(x)
+
+            x = torch.relu(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+            x = self.do2(x)
+            #x = self.fc3(x)
+
+            #x = self.bn3(x)
+
+            #x = torch.relu(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+            #x = self.do3(x)
+            x = self.fc4(x)
+
+            #x = self.bn4(x)
+
+            x = torch.relu(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+            x = self.do4(x)
+            x = self.fc5(x)
+
+            x = torch.sigmoid(x)
+        else :
+            x = self.fc1(x)
+            #x = x.squeeze(1)  # Squeeze the second dimension to have shape [16, 64]
+            #x = self.bn1(x)
+            #x = x.unsqueeze(1)  # Permute dimensions back to [16, 1, 64]
+            x = torch.relu(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+            x = self.do1(x)
+            x = self.fc2(x)
+            #x = x.squeeze(1)  # Squeeze the second dimension to have shape [16, 128]
+            #x = self.bn2(x)
+            #x = x.unsqueeze(1)  # Permute dimensions back to [16, 1, 128]
+            x = torch.relu(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+            x = self.do2(x)
+            #x = self.fc3(x)
+            #x = x.squeeze(1)  # Squeeze the second dimension to have shape [16, 64]
+            #x = self.bn3(x)
+            #x = x.unsqueeze(1)  # Permute dimensions back to [16, 1, 64]
+            #x = torch.relu(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+            #x = self.do3(x)
+            x = self.fc4(x)
+            #x = x.squeeze(1)  # Squeeze the second dimension to have shape [16, 64]
+            #x = self.bn4(x)
+            #x = x.unsqueeze(1)  # Permute dimensions back to [16, 1, 64]
+            x = torch.relu(x)  # Alternatively, you can use nn.ReLU() instead of torch.relu
+            x = self.do4(x)
+            x = self.fc5(x)
+            x = torch.sigmoid(x)
+        '''
 
         return x
 
@@ -105,7 +233,29 @@ class Net(nn.Module):
         return F.log_softmax(s, dim=1)
 
 
-def MSE_loss_fn(outputs, labels, batch_data, train):
+class bicycle_loss(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, input):
+        """
+        순전파 단계에서는 입력을 갖는 텐서를 받아 출력을 갖는 텐서를 반환합니다.
+        ctx는 컨텍스트 객체(context object)로 역전파 연산을 위한 정보 저장에 사용합니다.
+        ctx.save_for_backward 메소드를 사용하여 역전파 단계에서 사용할 어떤 객체도
+        저장(cache)해 둘 수 있습니다.
+        """
+        ctx.save_for_backward(input)
+        return 0.5 * (5 * input ** 3 - 3 * input)
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        """
+        역전파 단계에서는 출력에 대한 손실(loss)의 변화도(gradient)를 갖는 텐서를 받고,
+        입력에 대한 손실의 변화도를 계산해야 합니다.
+        """
+        input, = ctx.saved_tensors
+        return grad_output * 1.5 * (5 * input ** 2 - 1)
+
+
+def MSE_loss_fn(outputs, labels, batch_data, train, Vy, Yr):
     """
     Compute the cross entropy loss given outputs and labels.
 
@@ -121,29 +271,15 @@ def MSE_loss_fn(outputs, labels, batch_data, train):
     Note: you may use a standard loss function from http://pytorch.org/docs/master/nn.html#loss-functions. This example
           demonstrates how you can easily define a custom loss function.
     """
-
-    #Mf_nom = 904  # [Kg] 운전석에 1명 탔을때
-    #Mr_nom = 619  # [Kg] 운전석에 1명 탔을때
-
-    Mf_nom = 945  # [Kg] 운전석에 2명 탔을때
-    Mr_nom = 728  # [Kg] 운전석에 2명탔을때
-
-    M_nom = Mf_nom + Mr_nom  # [kg]
-
-    Lf_nom = 2.645 * Mr_nom / M_nom  # [m]
-    Lr_nom = 2.645 - Lf_nom  # [m]
-
-    T = 0.01  # time step
-
     '''
     [batch_size][window_size][number of features]
     Cf = outputs[][0]
     Cr = outputs[][1]
-    Vy_RT_loss = batch_data[][][7]
+    Vy_RT_loss = batch_data[][][6]
     yawrate_loss = batch_data[][][3]
-    sas_loss = batch_data[][][5]
+    sas_loss = batch_data[][][2]
     Vy_RT_dot_loss = batch_data[][][6]
-    v0(Vx) = batch_data[][][2]
+    v0(Vx) = batch_data[][][4]
     
     
     
@@ -154,38 +290,87 @@ def MSE_loss_fn(outputs, labels, batch_data, train):
     num_examples = batch_data.size()[0]  # batch size
     window_size = batch_data.size()[1]  # data number of columns
 
+    loss_vy = torch.zeros(num_examples)
+    loss_yr = torch.zeros(num_examples)
+
     # Vy를 출력해주기 위한 변수
-    result_array = np.empty((0))
+    if train :
+        for i in range(num_examples):
+            Vy = utils.bicycle_Vy1(outputs[i, 0, 0], outputs[i, 0, 1], batch_data[i, 0, 4], Vy, Yr, batch_data[i, 0, 2])
+            Yr = utils.bicycle_yr1(outputs[i, 0, 0], outputs[i, 0, 1], batch_data[i, 0, 4], Vy, Yr, batch_data[i, 0, 2])
+            loss_vy[i] = (Vy - labels[i, 1]) ** 2
+            loss_yr[i] = (Yr - labels[i, 0]) ** 2
 
-    loss = 0
-    result = batch_data[0][-1][6]
+    else :
+        Vy = utils.bicycle_Vy1(outputs[:, :, 0], outputs[:, :, 1], batch_data[:, :, 4],
+                                            Vy, Yr, batch_data[:, :, 2])
+        Yr = utils.bicycle_yr1(outputs[:, :, 0], outputs[:, :, 1], batch_data[:, :, 4],
+                                            Vy, Yr, batch_data[:, :, 2])
 
-    for i in range(num_examples):
-        # bicycle_dVy1, bicycle_Vy1
-        if train:
-            result = utils.bicycle_Vy1(outputs[i][0][0], outputs[i][0][1], batch_data[i][-1][2], batch_data[i][-1][6],
-                                        batch_data[i][-1][3], batch_data[i][-1][5])
-            loss += (labels[i] - result) ** 2
-            result = result.data.cpu().numpy()
-        else:
-            Cf = outputs[i][0][0].data.cpu().numpy()
-            Cr = outputs[i][0][1].data.cpu().numpy()
-            Vx = batch_data[i][-1][2].data.cpu().numpy()
-            Yr = batch_data[i][-1][3].data.cpu().numpy()
-            Sas = batch_data[i][-1][5].data.cpu().numpy()
+    #return (0.4 * loss_vy + 0.6 * loss_yr) / num_examples, Vy, Yr
+    return loss_vy / num_examples, loss_yr / num_examples, Vy, Yr
 
-            result = utils.bicycle_Vy1(Cf, Cr, Vx, result, Yr, Sas)
-            loss += (labels[i] - result) ** 2
-            # result = result.data.cpu().numpy()
-        '''
-        result = (-(outputs[i][0][0] + outputs[i][0][1]) / (M_nom * batch_data[i][-1][2]) * batch_data[i][-1][6] +
-                    ((Lr_nom * outputs[i][0][1] - Lf_nom * outputs[i][0][0]) / (M_nom * batch_data[i][-1][2]) - batch_data[i][-1][2]) * batch_data[i][-1][3] +
-                    outputs[i][0][0] * batch_data[i][-1][5] / M_nom) * T
-        '''
 
-        result_array = np.concatenate((result_array, np.array([result])), axis=0)
+def loss_vy_yr(output, label, batch_data, Vy, Yr):
+    """
+    Compute the cross entropy loss given outputs and labels.
 
-    return loss / num_examples, result_array
+    Args:
+        outputs: (Variable) dimension batch_size x 6 - output of the model
+        labels: (Variable) dimension batch_size, where each element is a value in [0, 1, 2, 3, 4, 5]
+        batch_data : (Variable) dimension batch_size X all indices
+        train: (Boolean) if train, previous Vy is ground truth
+
+    Returns:
+        loss (Variable): cross entropy loss for all images in the batch
+
+    Note: you may use a standard loss function from http://pytorch.org/docs/master/nn.html#loss-functions. This example
+          demonstrates how you can easily define a custom loss function.
+    """
+    '''
+    [batch_size][window_size][number of features]
+    Cf = outputs[0]
+    Cr = outputs[1]
+    Vy_RT_loss = batch_data[][6]
+    yawrate_loss = batch_data[][3]
+    sas_loss = batch_data[][2]
+    Vy_RT_dot_loss = batch_data[][6]
+    v0(Vx) = batch_data[][4]
+
+
+
+    Vy_dot_est(1, i) = (-(Cf(1, i) + Cr(1, i)) / (M_nom * v0). * Vy_RT_loss(1, i) +
+                        ((Lr_nom * Cr(1, i) - Lf_nom * Cf(1, i)) / (M_nom * v0) - v0). * yawrate_loss(1, i) +
+                        Cf(1, i). * sas_loss(1, i) / M_nom)*T
+    '''
+    window_size = batch_data.size()[1]  # data number of columns
+    if output.dim() == 1:
+        Vy_next, dVy_dCf, dVy_dCr = utils.bicycle_Vy1(output[0], output[1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
+        Yr_next, dYr_dCf, dYr_dCr = utils.bicycle_yr1(output[0], output[1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
+    else :
+        Vy_next, dVy_dCf, dVy_dCr = utils.bicycle_Vy1(output[0, 0], output[0, 1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
+        Yr_next, dYr_dCf, dYr_dCr = utils.bicycle_yr1(output[0, 0], output[0, 1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
+
+    #print(Vy, label[1])
+    loss_vy = (Vy_next - label[1]) ** 2
+    loss_yr = (Yr_next - label[0]) ** 2
+    '''
+    print('vy error ' + str(output[0, 0].item()) + str(' ') + str(output[0, 1].item()) + str(' ') + \
+                                       str(batch_data[0, 4].item()) + str(' ') + str(Vy.item()) + str(' ') + str(Yr.item()) + \
+                                       str(' ') + str(batch_data[0, 2].item()) + str(' ') + str(Vy_next.item()) + str(' ') + \
+                                       str(label[1].item()) + str(' ') + str(loss_vy.item()))
+    
+    assert abs(Vy_next.item()) < 100000, 'vy error ' + str(output[0, 0].item()) + str(' ') + str(output[0, 1].item()) + str(' ') + \
+                                       str(batch_data[0, 4].item()) + str(' ') + str(Vy.item()) + str(' ') + str(Yr.item()) + \
+                                       str(' ') + str(batch_data[0, 2].item()) + str(' ') + str(Vy_next.item()) + str(' ') + \
+                                       str(label[1].item()) + str(' ') + str(loss_vy.item())
+    assert abs(Yr_next.item()) < 100000, 'yr error ' + str(output[0, 0].item()) + str(' ') + str(output[0, 1].item()) + str(' ') + \
+                                       str(batch_data[0, 4].item()) + str(' ') + str(Vy.item()) + str(' ') + str(Yr.item()) + \
+                                       str(' ') + str(batch_data[0, 2].item()) + str(' ') + str(Yr_next.item()) + str(' ') + \
+                                       str(label[0].item()) + str(' ') + str(loss_yr.item())
+    '''
+    # return (0.4 * loss_vy + 0.6 * loss_yr) / num_examples, Vy, Yr
+    return loss_vy, loss_yr, Vy_next, Yr_next
 
 
 def accuracy(outputs, labels):
@@ -203,11 +388,23 @@ def accuracy(outputs, labels):
 
 
 def mse(outputs, labels):
-    return mean_squared_error(outputs, labels)
+    loss_func = nn.MSELoss()
+    loss = loss_func(outputs, labels)
+    return loss
+
+
+def vy_loss(vy_loss, yr_loss):
+    return vy_loss
+
+
+def yr_loss(vy_loss, yr_loss):
+    return yr_loss
 
 
 # maintain all metrics required in this dictionary- these are used in the training and evaluation loops
 metrics = {
+    'Vy Loss': vy_loss,
+    'Yr Loss': yr_loss
     #'MSE': mse,
     # could add more metrics such as accuracy for each token type
 }
