@@ -778,3 +778,77 @@
 2023-08-16 21:11:17,667:INFO: - done.
 2023-08-16 21:11:17,668:INFO: Starting evaluation
 2023-08-16 21:11:29,564:INFO: - Eval metrics : Vy Loss: 0.00425 ; Yr Loss: 0.00008 ; loss: 0.00258
+2023-08-29 13:40:27,085:INFO: Creating the dataset...
+2023-08-29 13:40:27,145:INFO: - done.
+2023-08-29 13:40:27,147:INFO: Starting evaluation
+2023-08-29 13:40:51,632:INFO: Creating the dataset...
+2023-08-29 13:40:51,666:INFO: - done.
+2023-08-29 13:40:51,667:INFO: Starting evaluation
+2023-08-29 13:41:30,253:INFO: - Eval metrics : Vy Loss: 0.02620 ; Yr Loss: 0.00249 ; loss: 0.01672
+2023-08-30 09:15:37,105:INFO: Creating the dataset...
+2023-08-30 09:15:37,166:INFO: - done.
+2023-08-30 09:15:37,166:INFO: Starting evaluation
+2023-08-30 09:16:10,039:INFO: Creating the dataset...
+2023-08-30 09:16:10,074:INFO: - done.
+2023-08-30 09:16:10,075:INFO: Starting evaluation
+2023-08-30 09:16:49,072:INFO: - Eval metrics : Cf Loss: 0.04328 ; Cr Loss: 0.00135 ; loss: 0.02651
+2023-08-30 11:34:10,609:INFO: Creating the dataset...
+2023-08-30 11:34:10,644:INFO: - done.
+2023-08-30 11:34:10,646:INFO: Starting evaluation
+2023-08-30 11:34:48,964:INFO: - Eval metrics : Cf Loss: 0.02985 ; Cr Loss: 0.00096 ; loss: 0.01829
+2023-08-30 11:53:08,027:INFO: Creating the dataset...
+2023-08-30 11:53:08,061:INFO: - done.
+2023-08-30 11:53:08,063:INFO: Starting evaluation
+2023-08-30 11:53:45,854:INFO: - Eval metrics : Cf Loss: 0.02985 ; Cr Loss: 0.00096 ; loss: 0.01829
+2023-08-30 14:03:56,281:INFO: Creating the dataset...
+2023-08-30 14:03:56,315:INFO: - done.
+2023-08-30 14:03:56,316:INFO: Starting evaluation
+2023-08-30 14:04:34,851:INFO: - Eval metrics : Cf Loss: 0.02985 ; Cr Loss: 0.00096 ; loss: 0.01829
+2023-08-31 08:43:52,229:INFO: Creating the dataset...
+2023-08-31 08:43:52,290:INFO: - done.
+2023-08-31 08:43:52,292:INFO: Starting evaluation
+2023-08-31 08:44:30,682:INFO: - Eval metrics : Cf Loss: 0.02486 ; Cr Loss: 0.00128 ; loss: 0.01543
+2023-09-01 15:16:21,894:INFO: Creating the dataset...
+2023-09-01 15:16:21,955:INFO: - done.
+2023-09-01 15:16:21,956:INFO: Starting evaluation
+2023-09-01 15:17:00,622:INFO: - Eval metrics : Cf Loss: 0.02131 ; Cr Loss: 0.00036 ; loss: 0.01293
+2023-09-01 15:21:10,800:INFO: Creating the dataset...
+2023-09-01 15:21:10,835:INFO: - done.
+2023-09-01 15:21:10,837:INFO: Starting evaluation
+2023-09-01 15:21:48,461:INFO: - Eval metrics : Cf Loss: 0.02131 ; Cr Loss: 0.00036 ; loss: 0.01293
+2023-09-01 15:34:46,349:INFO: Creating the dataset...
+2023-09-01 15:34:46,383:INFO: - done.
+2023-09-01 15:34:46,385:INFO: Starting evaluation
+2023-09-01 15:37:56,043:INFO: Creating the dataset...
+2023-09-01 15:37:56,078:INFO: - done.
+2023-09-01 15:37:56,080:INFO: Starting evaluation
+2023-09-01 15:38:21,602:INFO: Creating the dataset...
+2023-09-01 15:38:21,636:INFO: - done.
+2023-09-01 15:38:21,638:INFO: Starting evaluation
+2023-09-01 15:40:48,160:INFO: Creating the dataset...
+2023-09-01 15:40:48,194:INFO: - done.
+2023-09-01 15:40:48,196:INFO: Starting evaluation
+2023-09-01 15:41:43,183:INFO: Creating the dataset...
+2023-09-01 15:41:43,218:INFO: - done.
+2023-09-01 15:41:43,220:INFO: Starting evaluation
+2023-09-01 15:42:21,449:INFO: - Eval metrics : Cf Loss: 0.02131 ; Cr Loss: 0.00036 ; loss: 0.01293
+2023-09-01 15:44:24,114:INFO: Creating the dataset...
+2023-09-01 15:44:24,148:INFO: - done.
+2023-09-01 15:44:24,149:INFO: Starting evaluation
+2023-09-01 15:45:02,608:INFO: - Eval metrics : Cf Loss: 0.02016 ; Cr Loss: 0.00077 ; loss: 0.01241
+2023-09-04 11:30:58,854:INFO: Creating the dataset...
+2023-09-04 11:30:58,915:INFO: - done.
+2023-09-04 11:30:58,916:INFO: Starting evaluation
+2023-09-04 11:31:37,486:INFO: - Eval metrics : Cf Loss: 0.01553 ; Cr Loss: 0.00063 ; loss: 0.00957
+2023-09-05 12:49:18,337:INFO: Creating the dataset...
+2023-09-05 12:49:18,399:INFO: - done.
+2023-09-05 12:49:18,400:INFO: Starting evaluation
+2023-09-05 12:49:57,430:INFO: - Eval metrics : Cf Loss: 0.03587 ; Cr Loss: 0.00061 ; loss: 0.02176
+2023-09-05 12:50:50,683:INFO: Creating the dataset...
+2023-09-05 12:50:50,718:INFO: - done.
+2023-09-05 12:50:50,719:INFO: Starting evaluation
+2023-09-05 12:51:28,974:INFO: - Eval metrics : Cf Loss: 0.02287 ; Cr Loss: 0.00060 ; loss: 0.01396
+2023-09-05 12:55:25,391:INFO: Creating the dataset...
+2023-09-05 12:55:25,426:INFO: - done.
+2023-09-05 12:55:25,428:INFO: Starting evaluation
+2023-09-05 12:56:03,765:INFO: - Eval metrics : Cf Loss: 0.02287 ; Cr Loss: 0.00060 ; loss: 0.01396

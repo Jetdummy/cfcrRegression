@@ -8,6 +8,30 @@ from sklearn.metrics import mean_squared_error
 
 import utils
 
+class AttentionRegressionModel(nn.Module):
+    def __init__(self, params, hidden_dim, num_heads, num_layers):
+        super(AttentionRegressionModel, self).__init__()
+        # Multi-Head Self-Attention을 사용하는 Transformer 인코더를 정의합니다.
+        self.encoder_layer = nn.TransformerEncoderLayer(
+            d_model=params.num_channels,
+            nhead=num_heads,
+            dim_feedforward=hidden_dim
+        )
+        self.transformer_encoder = nn.TransformerEncoder(
+            encoder_layer=self.encoder_layer,
+            num_layers=num_layers
+        )
+        # 최종 회귀 레이어를 정의합니다.
+        self.regression_layer = nn.Linear(params.num_channels, 2)
+
+    def forward(self, x):
+        # 입력 데이터를 Transformer 인코더에 전달합니다.
+        x = self.transformer_encoder(x)
+        # 최종 회귀 레이어를 통해 예측을 수행합니다.
+        output = self.regression_layer(x)
+        output = torch.sigmoid(output)
+        return output
+
 
 class LSTMRegression(nn.Module):
     def __init__(self, params):
@@ -373,6 +397,31 @@ def loss_vy_yr(output, label, batch_data, Vy, Yr):
     return loss_vy, loss_yr, Vy_next, Yr_next
 
 
+def loss_lookup(batch, output):
+    Cf_nom = 253000 * 0.8
+    Cr_nom = 295000
+
+    loss_function = nn.MSELoss()
+    '''
+    cf_lookup = torch.tensor(utils.lookup_table_cf(batch[:, 0, 1] * Cf_nom), dtype=torch.float64)
+    cr_lookup = torch.tensor(utils.lookup_table_cr(batch[:, 0, 1] * Cr_nom), dtype=torch.float64)
+
+    print(utils.lookup_table_cf(batch[1, 0, 1]), output[1, 0, 1])
+
+    Cf = 1.2 * Cf_nom * output[:, 0, 0] + 0.05 * Cf_nom
+    Cr = 1.2 * Cr_nom * output[:, 0, 1] + 0.05 * Cr_nom
+
+    cf_loss = loss_function(Cf, cf_lookup)
+    cr_loss = loss_function(Cr, cr_lookup)
+    '''
+    cf = torch.tensor(utils.lookup_table_cf(batch[:, 0, 1]), dtype=torch.float64)
+    cr = torch.tensor(utils.lookup_table_cr(batch[:, 0, 1]), dtype=torch.float64)
+    cf_loss = loss_function(cf, output[:, 0, 0])
+    cr_loss = loss_function(cr, output[:, 0, 1])
+
+    return cf_loss, cr_loss
+
+
 def accuracy(outputs, labels):
     """
     Compute the accuracy, given the outputs and labels for all images.
@@ -401,10 +450,20 @@ def yr_loss(vy_loss, yr_loss):
     return yr_loss
 
 
+def cf_loss(vy_loss, yr_loss):
+    return vy_loss
+
+
+def cr_loss(vy_loss, yr_loss):
+    return yr_loss
+
+
 # maintain all metrics required in this dictionary- these are used in the training and evaluation loops
 metrics = {
-    'Vy Loss': vy_loss,
-    'Yr Loss': yr_loss
+    'Cf Loss': cf_loss,
+    'Cr Loss': cr_loss,
+    #'Vy Loss': vy_loss,
+    #'Yr Loss': yr_loss
     #'MSE': mse,
     # could add more metrics such as accuracy for each token type
 }

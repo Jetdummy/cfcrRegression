@@ -207,8 +207,11 @@ def CfCr_as_plot(y_pred, Cf_look, Cr_look):
 
     # Create a plot
     plt.figure(figsize=(20, 15))
-    Cf_pred = 2 * Cf_nom * y_pred[:, 0] + 0.5 * Cf_nom
-    Cr_pred = 2 * Cr_nom * y_pred[:, 1] + 0.5 * Cr_nom
+    #Cf_pred = 2 * Cf_nom * y_pred[:, 0] + 0.5 * Cf_nom
+    #Cr_pred = 2 * Cr_nom * y_pred[:, 1] + 0.5 * Cr_nom
+
+    Cf_pred = Cf_nom * y_pred[:, 0]
+    Cr_pred = Cr_nom * y_pred[:, 1]
 
     Cf_look = Cf_look * Cf_nom
     Cr_look = Cr_look * Cr_nom
@@ -270,8 +273,11 @@ def bicycle_Vy1(Cf, Cr, Vx, Vy, yr, Sas):
     #if Vx == 0:
     #    return 0;
 
-    Cf_nom = 253000 * 0.8
-    Cr_nom = 295000
+    #Cf_nom = 253000 * 0.8
+    #Cr_nom = 295000
+
+    Cf_nom = 168400
+    Cr_nom = 276200
 
     M_nom = 2374
     # M_nom = Mf_nom + Mr_nom  # [kg]
@@ -286,8 +292,11 @@ def bicycle_Vy1(Cf, Cr, Vx, Vy, yr, Sas):
 
     T = 0.01  # time step
 
-    Cf = 1.2 * Cf_nom * Cf + 0.05 * Cf_nom
-    Cr = 1.2 * Cr_nom * Cr + 0.05 * Cr_nom
+    #Cf = 1.2 * Cf_nom * Cf + 0.05 * Cf_nom
+    #Cr = 1.2 * Cr_nom * Cr + 0.05 * Cr_nom
+
+    Cf = Cf_nom * Cf
+    Cr = Cr_nom * Cr
     #if Vx.item() < 0.5:
     #    T = 0
     Vx = replace_under1_with_1(Vx)
@@ -324,8 +333,11 @@ def bicycle_Vy2(Cf, Cr, Vx, Vy, yr, Sas):
     # if Vx == 0:
     #    return 0;
 
-    Cf_nom = 253000 * 0.8
-    Cr_nom = 295000
+    #Cf_nom = 253000 * 0.8
+    #Cr_nom = 295000
+
+    Cf_nom = 168400
+    Cr_nom = 276200
 
     M_nom = 2374
     # M_nom = Mf_nom + Mr_nom  # [kg]
@@ -388,8 +400,11 @@ def bicycle_yr1(Cf, Cr, Vx, Vy, yr, Sas):
     # Lf_nom = 2.645 * Mr_nom / M_nom  # [m]
     # Lr_nom = 2.645 - Lf_nom  # [m]
 
-    Cf_nom = 253000 * 0.8
-    Cr_nom = 295000
+    #Cf_nom = 253000 * 0.8
+    #Cr_nom = 295000
+
+    Cf_nom = 168400
+    Cr_nom = 276200
 
     J_nom = 5263
     #J_nom = 1 * 3122 + 102 * (Lf_nom ** 2 + Lr_nom ** 2) # 3122kgm^2 from LM Carsim par file (sprung mass inertia)
@@ -397,8 +412,10 @@ def bicycle_yr1(Cf, Cr, Vx, Vy, yr, Sas):
     T = 0.01  # time step
 
     # => remove minimum (2, 0.5) => (1.2)
-    Cf = 1.2 * Cf_nom * Cf + 0.05 * Cf_nom
-    Cr = 1.2 * Cr_nom * Cr + 0.05 * Cr_nom
+    #Cf = 1.2 * Cf_nom * Cf + 0.05 * Cf_nom
+    #Cr = 1.2 * Cr_nom * Cr + 0.05 * Cr_nom
+    Cf = Cf_nom * Cf
+    Cr = Cr_nom * Cr
 
     #if Vx.item() < 1:
     #    Vx = replace_zeros_with_small_value(Vx, 1)
@@ -446,9 +463,10 @@ def bicycle_yr2(Cf, Cr, Vx, Vy, yr, Sas):
     # Lf_nom = 2.645 * Mr_nom / M_nom  # [m]
     # Lr_nom = 2.645 - Lf_nom  # [m]
 
-    Cf_nom = 253000 * 0.8
-    Cr_nom = 295000
-
+    #Cf_nom = 253000 * 0.8
+    #Cr_nom = 295000
+    Cf_nom = 168400
+    Cr_nom = 276200
     J_nom = 5263
     # J_nom = 1 * 3122 + 102 * (Lf_nom ** 2 + Lr_nom ** 2) # 3122kgm^2 from LM Carsim par file (sprung mass inertia)
 
@@ -485,11 +503,13 @@ def bicycle_yr2(Cf, Cr, Vx, Vy, yr, Sas):
 
 
 def lookup_table_cf(ay):
-    C_look = [0.000, 1.245, 1.79, 2.065, 3.014, 4.198, 5.414, 5.8, 6.200, 6.4, 7.056, 7.607, 7.954, 8.156, 8.340, 8.7,
-              9.010, 9.300, 9.500, 10.00, 11.76]
+    #C_look = [0.000, 1.245, 1.79, 2.065, 3.014, 4.198, 5.414, 5.8, 6.200, 6.4, 7.056, 7.607, 7.954, 8.156, 8.340, 8.7, 9.010, 9.300, 9.500, 10.00, 11.76]
 
-    Cf_look = [1.00, 1.00, 0.95, 0.93, 0.9 * 0.96, 0.88 * 0.96, 0.86 * 0.96, 0.84 * 0.95, 0.80 * 0.95, 0.74, 0.715,
-               0.710, 0.70, 0.680, 0.65, 0.64, 0.6, 0.55, 0.48, 0.4, 0.4]
+    C_look = [0.00, 0.63157895, 1.26315789, 1.89473684, 2.52631579, 3.15789474, 3.78947368, 4.42105263, 5.05263158, 5.68421053, 6.31578947, 6.94736842, 7.57894737, 8.21052632, 8.84210526, 9.47368421, 10.10526316, 10.73684211, 11.36842105, 12.00]
+
+    #Cf_look = [1.00, 1.00, 0.95, 0.93, 0.9 * 0.96, 0.88 * 0.96, 0.86 * 0.96, 0.84 * 0.95, 0.80 * 0.95, 0.74, 0.715, 0.710, 0.70, 0.680, 0.65, 0.64, 0.6, 0.55, 0.48, 0.4, 0.4]
+
+    Cf_look = [1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 0.999974, 0.938764, 0.934219, 0.885539, 0.885530, 0.847389, 0.795243, 0.736241, 0.553619, 0.458934, 0.391231, 0.070288, 0.070288, 0.070288]
 
     # Create an interpolation function with linear interpolation
     interpolation_function = interp1d(C_look, Cf_look, kind='linear', fill_value='extrapolate')
@@ -501,11 +521,13 @@ def lookup_table_cf(ay):
 
 
 def lookup_table_cr(ay):
-    C_look = [0.000, 1.245, 1.79, 2.065, 3.014, 4.198, 5.414, 5.8, 6.200, 6.4, 7.056, 7.607, 7.954, 8.156, 8.340, 8.7,
-              9.010, 9.300, 9.500, 10.00, 11.76]
+    #C_look = [0.000, 1.245, 1.79, 2.065, 3.014, 4.198, 5.414, 5.8, 6.200, 6.4, 7.056, 7.607, 7.954, 8.156, 8.340, 8.7, 9.010, 9.300, 9.500, 10.00, 11.76]
 
-    Cr_look = [1.00, 1.00, 1.00, 1.00, 1, 0.98, 0.95, 0.93, 0.93, 0.93, 0.900, 0.870, 0.85, 0.8, 0.75, 0.70, 0.62, 0.59,
-               0.58, 0.56, 0.54]
+    C_look = [0.00, 0.63157895, 1.26315789, 1.89473684, 2.52631579, 3.15789474, 3.78947368, 4.42105263, 5.05263158, 5.68421053, 6.31578947, 6.94736842, 7.57894737, 8.21052632, 8.84210526, 9.47368421, 10.10526316, 10.73684211, 11.36842105, 12.00]
+
+    #Cr_look = [1.00, 1.00, 1.00, 1.00, 1, 0.98, 0.95, 0.93, 0.93, 0.93, 0.900, 0.870, 0.85, 0.8, 0.75, 0.70, 0.62, 0.59, 0.58, 0.56, 0.54]
+
+    Cr_look = [1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 0.928755, 0.928755, 0.882532, 0.817083, 0.75571, 0.622662, 0.404081, 0.404081, 0.155547, 0.155547, 0.155547]
     # Create an interpolation function with linear interpolation
     interpolation_function = interp1d(C_look, Cr_look, kind='linear', fill_value='extrapolate')
 

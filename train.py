@@ -15,6 +15,7 @@ import utils
 import model.net as net
 import model.data_loader as data_loader
 from evaluate import evaluate
+from evaluate import evaluate_lookup
 
 from torchviz import make_dot
 
@@ -26,6 +27,122 @@ parser.add_argument('--model_dir', default='experiments/base_model',
 parser.add_argument('--restore_file', default=None,
                     help="Optional, name of the file in --model_dir containing weights to reload before \
                     training")  # 'best' or 'train'
+
+
+def train_lookup(model, optimizer, loss_fn, dataloader, metrics, params):
+    """Train the model on `num_steps` batches
+
+        Args:
+            model: (torch.nn.Module) the neural network
+            optimizer: (torch.optim) optimizer for parameters of model
+            loss_fn: a function that takes batch_output and batch_labels and computes the loss for the batch
+            dataloader: (DataLoader) a torch.utils.data.DataLoader object that fetches training data
+            metrics: (dict) a dictionary of functions that compute a metric using the output and labels of each batch
+            params: (Params) hyperparameters
+            num_steps: (int) number of batches to train on, each of size params.batch_size
+        """
+
+    # set model to training mode
+    model.train()
+
+    # summary for current training loop and a running average object for loss
+    summ = []
+    loss_avg = utils.RunningAverage()
+
+    torch.autograd.set_detect_anomaly(True)
+
+    # Use tqdm for progress bar
+    with tqdm(total=len(dataloader)) as t:
+        for i, (train_batch, labels_batch, all_batch) in enumerate(dataloader):
+            # if params.cuda:
+            #    train_batch, labels_batch, all_batch = train_batch.cuda(non_blocking=True), labels_batch.cuda(non_blocking=True), all_batch.cuda(non_blocking=True)
+
+            # convert to torch Variables
+            # train_batch, labels_batch, all_batch = Variable(train_batch), Variable(labels_batch), Variable(all_batch)
+
+            optimizer.zero_grad()
+
+            #Vyt = all_batch[0][-1][6]
+            #Yrt = all_batch[0][-1][3]
+
+            #losses_vy = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+            #losses_yr = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+
+            #vys = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+            #yrs = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+
+
+            #model.init_hidden(train_batch.size(1))
+
+            output_batch = model(train_batch)
+
+
+            cf_loss, cr_loss = loss_fn(all_batch, output_batch)
+
+            # loss = loss_vy_total
+            # print(loss).
+
+            loss = cf_loss + cr_loss
+
+            loss.backward()
+
+            # performs updates using calculated gradients
+            optimizer.step()
+
+            # utils.plot_grad_flow(model.named_parameters())
+
+            # optimizer.zero_grad()
+            '''
+                # Manually update the parameters using gradients
+                with torch.no_grad():
+                    t -= optimizer.param_groups[0]['lr'] * t.grad
+
+                    # Manually zero the gradients after updating the parameters
+                    t.grad.zero_()
+
+            loss_vy, loss_yr, _, _ = loss_fn(output, l, a, True, Vyt, Yrt)
+
+            loss = 0.6*loss_vy + 0.4*loss_yr
+            # clear previous gradients, compute gradients of all variables wrt loss
+            optimizer.zero_grad()
+            loss.requires_grad_(True)
+            loss.backward()
+            '''
+
+            # Evaluate summaries only once in a while
+            if i % params.save_summary_steps == 0:
+                # extract data from torch Variable, move to cpu, convert to numpy arrays
+                # print("output", output)
+                # print("all", all[0, 4], all[0, 2])
+                # print(losses_vy[-1])
+                # print(Vyt, Yrt, label[1])
+                # output_batch = output_batch.data.cpu().numpy()
+                # labels_batch = labels_batch.data.cpu().numpy()
+                # for p in model.parameters():
+                #    print(p)
+                #    break
+                cf_loss = cf_loss.detach().numpy()
+                cr_loss = cr_loss.detach().numpy()
+
+                # compute all metrics on this batch
+                summary_batch = {metric: metrics[metric](cf_loss, cr_loss) for metric in metrics}
+                summary_batch['loss'] = loss.item()
+                summ.append(summary_batch)
+
+            # update the average loss
+            loss_avg.update(loss.item())
+
+            t.set_postfix(loss='{:05.5f}'.format(loss_avg()))
+            t.update()
+
+    utils.plot_grad_flow_now()
+    # compute mean of all metrics in summary
+    metrics_mean = {metric: np.mean([x[metric]
+                                     for x in summ]) for metric in summ[0]}
+    metrics_string = " ; ".join("{}: {:05.8f}".format(k, v)
+                                for k, v in metrics_mean.items())
+    logging.info("- Train metrics: " + metrics_string)
+
 
 
 def train(model, optimizer, loss_fn, dataloader, metrics, params):
@@ -216,7 +333,7 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer, loss_
         logging.info("Restoring parameters from {}".format(restore_path))
         utils.load_checkpoint(restore_path, model, optimizer)
 
-    best_val_acc = 0.0
+    best_val_acc = 100000.0
 
     for epoch in range(params.num_epochs):
         # Run one epoch
@@ -229,7 +346,9 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer, loss_
         val_metrics, _, _, _, _, _, _, _, _, _ = evaluate(model, loss_fn, val_dataloader, metrics, params, True)
 
         val_acc = val_metrics['loss']
-        is_best = val_acc >= best_val_acc
+        is_best = val_acc <= best_val_acc
+
+        print(val_acc ,best_val_acc)
 
         # Save weights
         utils.save_checkpoint({'epoch': epoch + 1,
@@ -255,6 +374,7 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer, loss_
 
 
 if __name__ == '__main__':
+    # loss function, train, evaluation
     # Load the parameters from json file
     args = parser.parse_args()
     json_path = os.path.join(args.model_dir, 'params.json')
@@ -277,7 +397,7 @@ if __name__ == '__main__':
     logging.info("Loading the datasets...")
 
     # Choose input features in data
-    selected_indices = [7, 8, 9, 10, 11]
+    selected_indices = [0, 1, 2, 3, 4]
     # 8-12, 7-11
     # Set input number of columns
     window = 1
@@ -292,8 +412,10 @@ if __name__ == '__main__':
     logging.info("- done.")
 
     # Define the model
-    model = net.FourLayerModel(params).cuda() if params.cuda else net.FourLayerModel(params)
+    #model = net.FourLayerModel(params).cuda() if params.cuda else net.FourLayerModel(params)
     #model = net.LSTMRegression(params).cuda() if params.cuda else net.LSTMRegression(params)
+    model = net.AttentionRegressionModel(params=params, hidden_dim=128, num_heads=1, num_layers=2).cuda() \
+        if params.cuda else net.AttentionRegressionModel(params=params, hidden_dim=128, num_heads=1, num_layers=2)
 
     # Use parameters as float 64
     model.double()
@@ -303,6 +425,7 @@ if __name__ == '__main__':
     #, weight_decay=params.regularizer
 
     # fetch loss function and metrics
+    #loss_fn = net.loss_lookup
     loss_fn = net.loss_vy_yr
     metrics = net.metrics
 
