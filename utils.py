@@ -4,7 +4,7 @@ import os
 import shutil
 import matplotlib.pyplot as plt
 
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 import numpy as np
 from scipy.interpolate import interp1d
 from scipy.signal import find_peaks
@@ -151,8 +151,10 @@ def load_checkpoint(checkpoint, model, optimizer=None):
 
 
 def compare_as_plot_vy(y_true, y_pred, lookUp):
-    print("Vy MSE(model) : ", mean_squared_error(y_pred, y_true))
-    print("Vy MSE(LUT) : ", mean_squared_error(lookUp, y_true))
+    print("Vy MSE(model) : ", mean_absolute_error(y_pred, y_true))
+    print("Vy MSE(LUT) : ", mean_absolute_error(lookUp, y_true))
+    #print("Vy MSE(model) : ", mean_squared_error(y_pred, y_true))
+    #print("Vy MSE(LUT) : ", mean_squared_error(lookUp, y_true))
     print("Vy Peak Error(model) : ", peak_error(y_pred, y_true))
     print("Vy Peak Error(LUT) : ", peak_error(lookUp, y_true))
     # Create a plot
@@ -168,16 +170,26 @@ def compare_as_plot_vy(y_true, y_pred, lookUp):
 
     # Add labels and legend
     plt.xlabel('time[0.01s]')
-    plt.ylabel('Vy')
+    plt.ylabel('Beta[rad]')
     plt.legend()
 
     # Show the plot
     plt.show()
 
+    plt.figure(figsize=(20, 15))
+    plt.plot(range(len(y_true)), np.abs(y_pred - y_true), c='red', label='error')
+    plt.xlabel('time[0.01s]')
+    plt.ylabel('error')
+    plt.show()
+
+
 
 def compare_as_plot_yr(y_true, y_pred, lookUp):
-    print("Yr MSE(model) : ", mean_squared_error(y_pred, y_true))
-    print("Yr MSE(LUT) : ", mean_squared_error(lookUp, y_true))
+    print("Yr MSE(model) : ", mean_absolute_error(y_pred, y_true))
+    print("Yr MSE(LUT) : ", mean_absolute_error(lookUp, y_true))
+    #print("Yr MSE(model) : ", mean_squared_error(y_pred, y_true))
+    #print("Yr MSE(LUT) : ", mean_squared_error(lookUp, y_true))
+
     print("Yr Peak Error(model) : ", peak_error(y_pred, y_true))
     print("Yr Peak Error(LUT) : ", peak_error(lookUp, y_true))
     # Create a plot
@@ -193,7 +205,7 @@ def compare_as_plot_yr(y_true, y_pred, lookUp):
 
     # Add labels and legend
     plt.xlabel('time[0.01s]')
-    plt.ylabel('Yaw rate')
+    plt.ylabel('Yaw rate[rps]')
     plt.legend()
 
     # Show the plot
@@ -380,6 +392,35 @@ def bicycle_Vy2(Cf, Cr, Vx, Vy, yr, Sas):
     return Vy_next
 
 
+def bicycle_beta(Cf, Cr, Vx, Beta, yr, Sas):
+    Cf_nom = 168400
+    Cr_nom = 276200
+
+    M_nom = 2374
+    # M_nom = Mf_nom + Mr_nom  # [kg]
+
+    L = 3.010
+    Lf_nom = (577 + 564) / (577 + 564 + 556 + 565) * L
+
+    Lr_nom = L - Lf_nom
+
+    # Lf_nom = 2.645 * Mr_nom / M_nom  # [m]
+    # Lr_nom = 2.645 - Lf_nom  # [m]
+
+    T = 0.01  # time step
+
+    Cf = Cf_nom * Cf
+    Cr = Cr_nom * Cr
+    # if Vx.item() < 0.5:
+    #    T = 0
+   # Vx = replace_under1_with_1(Vx)
+
+    beta_next = - yr * T + (1 -(Cf + Cr) * T / (M_nom * Vx)) * Beta + \
+              (- Lf_nom * Cf + Lr_nom * Cr) / (M_nom * Vx * Vx) * T * yr + \
+              Cf * Sas * T / (M_nom * Vx)
+
+    return beta_next
+
 def bicycle_yr1(Cf, Cr, Vx, Vy, yr, Sas):
     # Mf_nom = 904  # [Kg] 운전석에 1명 탔을때
     # Mr_nom = 619  # [Kg] 운전석에 1명 탔을때
@@ -550,7 +591,7 @@ def replace_zeros_with_small_value(tensor, small_value=1):
 
 def replace_under1_with_1(tensor, small_value=2):
     # Create a condition tensor where the elements are True where the input tensor is 0, and False otherwise
-    condition = tensor < 2
+    condition = tensor < small_value
 
     # Use torch.where to replace elements where the condition is True (i.e., where the tensor is 0)
     # with the small_value, and leave the other elements unchanged

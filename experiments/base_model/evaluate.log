@@ -852,3 +852,178 @@
 2023-09-05 12:55:25,426:INFO: - done.
 2023-09-05 12:55:25,428:INFO: Starting evaluation
 2023-09-05 12:56:03,765:INFO: - Eval metrics : Cf Loss: 0.02287 ; Cr Loss: 0.00060 ; loss: 0.01396
+2023-09-11 09:01:13,442:INFO: Creating the dataset...
+2023-09-11 09:01:13,489:INFO: - done.
+2023-09-11 09:01:13,491:INFO: Starting evaluation
+2023-09-11 09:01:45,667:INFO: Creating the dataset...
+2023-09-11 09:01:45,705:INFO: - done.
+2023-09-11 09:01:45,708:INFO: Starting evaluation
+2023-09-11 09:02:22,614:INFO: - Eval metrics : Cf Loss: 0.63665 ; Cr Loss: 0.00374 ; loss: 0.38348
+2023-09-11 11:17:48,721:INFO: Creating the dataset...
+2023-09-11 11:17:48,759:INFO: - done.
+2023-09-11 11:17:48,763:INFO: Starting evaluation
+2023-09-11 11:18:25,509:INFO: - Eval metrics : Cf Loss: 0.63665 ; Cr Loss: 0.00374 ; loss: 0.38348
+2023-09-12 09:37:29,086:INFO: Creating the dataset...
+2023-09-12 09:37:29,105:INFO: - done.
+2023-09-12 09:37:29,109:INFO: Starting evaluation
+2023-09-12 09:37:43,807:INFO: - Eval metrics : Cf Loss: 0.34776 ; Cr Loss: 0.00049 ; loss: 0.20885
+2023-09-12 14:54:09,351:INFO: Creating the dataset...
+2023-09-12 14:54:09,357:INFO: - done.
+2023-09-12 14:54:09,360:INFO: Starting evaluation
+2023-09-12 14:54:14,246:INFO: - Eval metrics : Cf Loss: 0.00284 ; Cr Loss: 0.00088 ; loss: 0.00206
+2023-09-18 10:52:01,869:INFO: Creating the dataset...
+2023-09-18 10:52:01,900:INFO: - done.
+2023-09-18 10:52:01,900:INFO: Starting evaluation
+2023-09-18 10:52:22,043:INFO: - Eval metrics : Cf Loss: 0.03422 ; Cr Loss: 0.00735 ; loss: 0.02347
+2023-09-18 12:05:18,181:INFO: Creating the dataset...
+2023-09-18 12:05:18,196:INFO: - done.
+2023-09-18 12:05:18,212:INFO: Starting evaluation
+2023-09-18 12:05:39,666:INFO: - Eval metrics : Cf Loss: 0.03422 ; Cr Loss: 0.00735 ; loss: 0.02347
+2023-09-21 08:49:27,906:INFO: Creating the dataset...
+2023-09-21 08:49:27,937:INFO: - done.
+2023-09-21 08:49:27,937:INFO: Starting evaluation
+2023-09-21 08:49:48,183:INFO: - Eval metrics : Cf Loss: 0.07422 ; Cr Loss: 0.00021 ; loss: 0.07631
+2023-10-02 23:36:33,603:INFO: Creating the dataset...
+2023-10-02 23:36:33,622:INFO: - done.
+2023-10-02 23:36:33,626:INFO: Starting evaluation
+2023-10-02 23:36:50,782:INFO: - Eval metrics : Cf Loss: 0.00365 ; Cr Loss: 0.00065 ; loss: 0.01017
+2023-10-03 10:31:57,052:INFO: Creating the dataset...
+2023-10-03 10:31:57,068:INFO: - done.
+2023-10-03 10:31:57,068:INFO: Starting evaluation
+2023-10-03 10:32:10,856:INFO: - Eval metrics : Cf Loss: 0.05699 ; Cr Loss: 0.00238 ; loss: 0.08076
+2023-10-03 22:31:35,877:INFO: Creating the dataset...
+2023-10-03 22:31:35,888:INFO: - done.
+2023-10-03 22:31:35,891:INFO: Starting evaluation
+2023-10-03 22:31:40,525:INFO: - Eval metrics : Cf Loss: 0.00263 ; Cr Loss: 0.00095 ; loss: 0.01212
+2023-10-04 08:51:10,836:INFO: Creating the dataset...
+2023-10-04 08:51:10,867:INFO: - done.
+2023-10-04 08:51:10,867:INFO: Starting evaluation
+2023-10-04 08:54:43,340:INFO: Creating the dataset...
+2023-10-04 08:54:43,371:INFO: - done.
+2023-10-04 08:54:43,371:INFO: Starting evaluation
+2023-10-04 08:55:00,575:INFO: - Eval metrics : Cf Loss: 0.07322 ; Cr Loss: 0.00018 ; loss: 0.07499
+2023-10-04 21:22:31,617:INFO: Creating the dataset...
+2023-10-04 21:22:31,649:INFO: - done.
+2023-10-04 21:22:31,649:INFO: Starting evaluation
+2023-10-04 21:22:48,857:INFO: - Eval metrics : Cf Loss: 0.07322 ; Cr Loss: 0.00018 ; loss: 0.07499
+2023-10-05 08:45:35,484:INFO: Creating the dataset...
+2023-10-05 08:45:35,497:INFO: - done.
+2023-10-05 08:45:35,498:INFO: Starting evaluation
+2023-10-05 08:45:39,774:INFO: - Eval metrics : Cf Loss: 0.00353 ; Cr Loss: 0.00086 ; loss: 0.01211
+2023-10-06 00:24:25,192:INFO: Creating the dataset...
+2023-10-06 00:24:25,212:INFO: - done.
+2023-10-06 00:24:25,213:INFO: Starting evaluation
+2023-10-06 00:24:36,630:INFO: - Eval metrics : Cf Loss: 0.15868 ; Cr Loss: 0.00036 ; loss: 0.16229
+2023-10-06 08:44:16,761:INFO: Creating the dataset...
+2023-10-06 08:44:16,776:INFO: - done.
+2023-10-06 08:44:16,776:INFO: Starting evaluation
+2023-10-06 08:44:29,725:INFO: - Eval metrics : Cf Loss: 0.00668 ; Cr Loss: 0.00038 ; loss: 0.01046
+2023-10-09 10:32:09,892:INFO: Creating the dataset...
+2023-10-09 10:32:09,908:INFO: - done.
+2023-10-09 10:32:09,908:INFO: Starting evaluation
+2023-10-09 10:32:35,603:INFO: Creating the dataset...
+2023-10-09 10:32:35,619:INFO: - done.
+2023-10-09 10:32:35,619:INFO: Starting evaluation
+2023-10-09 11:47:37,586:INFO: Creating the dataset...
+2023-10-09 11:47:37,617:INFO: - done.
+2023-10-09 11:47:37,617:INFO: Starting evaluation
+2023-10-09 11:48:04,691:INFO: - Eval metrics : Cf Loss: 0.06022 ; Cr Loss: 0.00203 ; loss: 0.08050
+2023-10-11 11:05:11,462:INFO: Creating the dataset...
+2023-10-11 11:05:11,728:INFO: - done.
+2023-10-11 11:05:11,728:INFO: Starting evaluation
+2023-10-11 11:05:56,368:INFO: Creating the dataset...
+2023-10-11 11:05:56,602:INFO: - done.
+2023-10-11 11:05:56,618:INFO: Starting evaluation
+2023-10-11 11:11:46,476:INFO: - Eval metrics : Cf Loss: 0.06855 ; Cr Loss: 0.00047 ; loss: 0.07327
+2023-10-11 13:44:30,229:INFO: Creating the dataset...
+2023-10-11 13:44:30,490:INFO: - done.
+2023-10-11 13:44:30,490:INFO: Starting evaluation
+2023-10-11 13:50:12,355:INFO: - Eval metrics : Cf Loss: 30.50485 ; Cr Loss: 0.31069 ; loss: 33.61178
+2023-10-12 08:57:14,830:INFO: Creating the dataset...
+2023-10-12 08:57:15,095:INFO: - done.
+2023-10-12 08:57:15,127:INFO: Starting evaluation
+2023-10-12 09:02:28,623:INFO: - Eval metrics : Cf Loss: 0.04851 ; Cr Loss: 0.00220 ; loss: 0.07049
+2023-10-14 07:34:24,208:INFO: Creating the dataset...
+2023-10-14 07:34:24,464:INFO: - done.
+2023-10-14 07:34:24,468:INFO: Starting evaluation
+2023-10-14 07:39:49,966:INFO: - Eval metrics : Cf Loss: 0.03652 ; Cr Loss: 0.00166 ; loss: 0.05312
+2023-10-16 08:41:42,343:INFO: Creating the dataset...
+2023-10-16 08:41:42,587:INFO: - done.
+2023-10-16 08:41:42,587:INFO: Starting evaluation
+2023-10-16 08:47:13,727:INFO: - Eval metrics : Cf Loss: 0.11287 ; Cr Loss: 0.00229 ; loss: 0.13576
+2023-10-16 09:52:34,966:INFO: Creating the dataset...
+2023-10-16 09:52:35,231:INFO: - done.
+2023-10-16 09:52:35,247:INFO: Starting evaluation
+2023-10-16 09:58:12,273:INFO: - Eval metrics : Cf Loss: 0.08747 ; Cr Loss: 0.00149 ; loss: 0.10237
+2023-10-19 12:51:27,109:INFO: Creating the dataset...
+2023-10-19 12:51:27,765:INFO: - done.
+2023-10-19 12:51:27,765:INFO: Starting evaluation
+2023-10-19 12:56:45,886:INFO: - Eval metrics : Beta Loss: 0.54848 ; Yawrate Loss: 0.10203 ; loss: 0.65051
+2023-10-19 13:12:05,761:INFO: Creating the dataset...
+2023-10-19 13:12:06,371:INFO: - done.
+2023-10-19 13:12:06,371:INFO: Starting evaluation
+2023-10-19 13:17:22,687:INFO: - Eval metrics : Beta Loss: 0.54848 ; Yawrate Loss: 0.10203 ; loss: 0.65051
+2023-10-19 13:29:51,910:INFO: Creating the dataset...
+2023-10-19 13:29:52,472:INFO: - done.
+2023-10-19 13:29:52,472:INFO: Starting evaluation
+2023-10-19 13:31:57,442:INFO: Creating the dataset...
+2023-10-19 13:31:58,021:INFO: - done.
+2023-10-19 13:31:58,021:INFO: Starting evaluation
+2023-10-19 13:37:12,541:INFO: - Eval metrics : Beta Loss: 0.55861 ; Yawrate Loss: 0.10358 ; loss: 0.66219
+2023-10-20 12:48:44,246:INFO: Creating the dataset...
+2023-10-20 12:48:44,917:INFO: - done.
+2023-10-20 12:48:44,917:INFO: Starting evaluation
+2023-10-20 12:49:23,284:INFO: Creating the dataset...
+2023-10-20 12:49:23,880:INFO: - done.
+2023-10-20 12:49:23,880:INFO: Starting evaluation
+2023-10-20 12:54:29,728:INFO: - Eval metrics : Beta Loss: 0.11935 ; Yawrate Loss: 0.00946 ; loss: 0.12880
+2023-10-21 07:34:56,078:INFO: Creating the dataset...
+2023-10-21 07:34:56,751:INFO: - done.
+2023-10-21 07:34:56,766:INFO: Starting evaluation
+2023-10-21 07:39:59,360:INFO: - Eval metrics : Beta Loss: 0.06209 ; Yawrate Loss: 0.00877 ; loss: 0.07086
+2023-10-21 09:39:16,710:INFO: Creating the dataset...
+2023-10-21 09:39:16,913:INFO: - done.
+2023-10-21 09:39:16,913:INFO: Starting evaluation
+2023-10-21 09:40:42,483:INFO: - Eval metrics : Beta Loss: 0.07913 ; Yawrate Loss: 0.01307 ; loss: 0.09221
+2023-10-21 09:44:01,580:INFO: Creating the dataset...
+2023-10-21 09:44:01,752:INFO: - done.
+2023-10-21 09:44:01,768:INFO: Starting evaluation
+2023-10-21 09:45:27,875:INFO: - Eval metrics : Beta Loss: 0.07666 ; Yawrate Loss: 0.01299 ; loss: 0.08965
+2023-10-21 09:48:03,283:INFO: Creating the dataset...
+2023-10-21 09:48:03,470:INFO: - done.
+2023-10-21 09:48:03,470:INFO: Starting evaluation
+2023-10-21 09:53:05,426:INFO: Creating the dataset...
+2023-10-21 09:53:05,613:INFO: - done.
+2023-10-21 09:53:05,613:INFO: Starting evaluation
+2023-10-21 09:53:24,818:INFO: Creating the dataset...
+2023-10-21 09:53:25,006:INFO: - done.
+2023-10-21 09:53:25,006:INFO: Starting evaluation
+2023-10-21 09:54:50,089:INFO: - Eval metrics : Beta Loss: 0.07666 ; Yawrate Loss: 0.01299 ; loss: 0.08965
+2023-10-22 11:16:33,827:INFO: Creating the dataset...
+2023-10-22 11:16:34,566:INFO: - done.
+2023-10-22 11:16:34,569:INFO: Starting evaluation
+2023-10-22 11:21:45,106:INFO: - Eval metrics : Beta Loss: 0.05876 ; Yawrate Loss: 0.00814 ; loss: 0.06690
+2023-10-22 11:28:10,169:INFO: Creating the dataset...
+2023-10-22 11:28:10,378:INFO: - done.
+2023-10-22 11:28:10,381:INFO: Starting evaluation
+2023-10-22 11:29:34,923:INFO: - Eval metrics : Beta Loss: 0.07857 ; Yawrate Loss: 0.01292 ; loss: 0.09148
+2023-10-23 08:50:28,028:INFO: Creating the dataset...
+2023-10-23 08:50:28,247:INFO: - done.
+2023-10-23 08:50:28,247:INFO: Starting evaluation
+2023-10-23 08:51:52,098:INFO: - Eval metrics : Beta Loss: 0.07815 ; Yawrate Loss: 0.01336 ; loss: 0.09151
+2023-10-23 10:32:08,017:INFO: Creating the dataset...
+2023-10-23 10:32:08,751:INFO: - done.
+2023-10-23 10:32:08,751:INFO: Starting evaluation
+2023-10-23 10:37:15,381:INFO: - Eval metrics : Beta Loss: 0.06179 ; Yawrate Loss: 0.00780 ; loss: 0.06959
+2023-10-24 17:04:29,110:INFO: Creating the dataset...
+2023-10-24 17:04:29,860:INFO: - done.
+2023-10-24 17:04:29,860:INFO: Starting evaluation
+2023-10-24 17:09:46,633:INFO: - Eval metrics : Beta Loss: 0.00950 ; Yawrate Loss: 0.01643 ; loss: 0.02592
+2023-10-24 17:30:08,157:INFO: Creating the dataset...
+2023-10-24 17:30:08,813:INFO: - done.
+2023-10-24 17:30:08,813:INFO: Starting evaluation
+2023-10-24 17:35:23,540:INFO: - Eval metrics : Beta Loss: 0.00950 ; Yawrate Loss: 0.01643 ; loss: 0.02592
+2023-10-24 17:38:22,288:INFO: Creating the dataset...
+2023-10-24 17:38:22,523:INFO: - done.
+2023-10-24 17:38:22,523:INFO: Starting evaluation
+2023-10-24 17:39:47,393:INFO: - Eval metrics : Beta Loss: 0.00933 ; Yawrate Loss: 0.02772 ; loss: 0.03705

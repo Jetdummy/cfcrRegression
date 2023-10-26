@@ -369,15 +369,15 @@ def loss_vy_yr(output, label, batch_data, Vy, Yr):
     '''
     window_size = batch_data.size()[1]  # data number of columns
     if output.dim() == 1:
-        Vy_next, dVy_dCf, dVy_dCr = utils.bicycle_Vy1(output[0], output[1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
-        Yr_next, dYr_dCf, dYr_dCr = utils.bicycle_yr1(output[0], output[1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
+        Vy_next = utils.bicycle_Vy2(output[0], output[1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
+        Yr_next = utils.bicycle_yr2(output[0], output[1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
     else :
-        Vy_next, dVy_dCf, dVy_dCr = utils.bicycle_Vy1(output[0, 0], output[0, 1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
-        Yr_next, dYr_dCf, dYr_dCr = utils.bicycle_yr1(output[0, 0], output[0, 1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
+        Vy_next = utils.bicycle_Vy2(output[0, 0], output[0, 1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
+        Yr_next = utils.bicycle_yr2(output[0, 0], output[0, 1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
 
     #print(Vy, label[1])
-    loss_vy = (Vy_next - label[1]) ** 2
-    loss_yr = (Yr_next - label[0]) ** 2
+    loss_vy = torch.abs(Vy_next - label[1])
+    loss_yr = torch.abs(Yr_next - label[0])
     '''
     print('vy error ' + str(output[0, 0].item()) + str(' ') + str(output[0, 1].item()) + str(' ') + \
                                        str(batch_data[0, 4].item()) + str(' ') + str(Vy.item()) + str(' ') + str(Yr.item()) + \
@@ -395,6 +395,70 @@ def loss_vy_yr(output, label, batch_data, Vy, Yr):
     '''
     # return (0.4 * loss_vy + 0.6 * loss_yr) / num_examples, Vy, Yr
     return loss_vy, loss_yr, Vy_next, Yr_next
+
+
+def loss_beta(output, label, batch_data, Beta, Yr):
+    """
+    Compute the cross entropy loss given outputs and labels.
+
+    Args:
+        outputs: (Variable) dimension batch_size x 6 - output of the model
+        labels: (Variable) dimension batch_size, where each element is a value in [0, 1, 2, 3, 4, 5]
+        batch_data : (Variable) dimension batch_size X all indices
+        train: (Boolean) if train, previous Vy is ground truth
+
+    Returns:
+        loss (Variable): cross entropy loss for all images in the batch
+
+    Note: you may use a standard loss function from http://pytorch.org/docs/master/nn.html#loss-functions. This example
+          demonstrates how you can easily define a custom loss function.
+    """
+    '''
+    [batch_size][window_size][number of features]
+    Cf = outputs[0]
+    Cr = outputs[1]
+    Vy_RT_loss = batch_data[][6]
+    yawrate_loss = batch_data[][3]
+    sas_loss = batch_data[][2]
+    Vy_RT_dot_loss = batch_data[][6]
+    v0(Vx) = batch_data[][4]
+
+
+
+    Vy_dot_est(1, i) = (-(Cf(1, i) + Cr(1, i)) / (M_nom * v0). * Vy_RT_loss(1, i) +
+                        ((Lr_nom * Cr(1, i) - Lf_nom * Cf(1, i)) / (M_nom * v0) - v0). * yawrate_loss(1, i) +
+                        Cf(1, i). * sas_loss(1, i) / M_nom)*T
+    '''
+    window_size = batch_data.size()[1]  # data number of columns
+    if output.dim() == 1:
+        #Vy_next = utils.bicycle_Vy2(output[0], output[1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
+        Yr_next = utils.bicycle_yr2(output[0], output[1], batch_data[0, 4], Beta, Yr, batch_data[0, 2])
+        Beta_next = utils.bicycle_beta(output[0], output[1], batch_data[0, 4], Beta, Yr, batch_data[0, 2])
+    else:
+        #Vy_next = utils.bicycle_Vy2(output[0, 0], output[0, 1], batch_data[0, 4], Vy, Yr, batch_data[0, 2])
+        Yr_next = utils.bicycle_yr2(output[0, 0], output[0, 1], batch_data[0, 4], Beta, Yr, batch_data[0, 2])
+        Beta_next = utils.bicycle_beta(output[0, 0], output[0, 1], batch_data[0, 4], Beta, Yr, batch_data[0, 2])
+
+    # print(Vy, label[1])
+    loss_beta = torch.abs(Beta_next - label[1])
+    loss_yr = torch.abs(Yr_next - label[0])
+    '''
+    print('vy error ' + str(output[0, 0].item()) + str(' ') + str(output[0, 1].item()) + str(' ') + \
+                                       str(batch_data[0, 4].item()) + str(' ') + str(Vy.item()) + str(' ') + str(Yr.item()) + \
+                                       str(' ') + str(batch_data[0, 2].item()) + str(' ') + str(Vy_next.item()) + str(' ') + \
+                                       str(label[1].item()) + str(' ') + str(loss_vy.item()))
+
+    assert abs(Vy_next.item()) < 100000, 'vy error ' + str(output[0, 0].item()) + str(' ') + str(output[0, 1].item()) + str(' ') + \
+                                       str(batch_data[0, 4].item()) + str(' ') + str(Vy.item()) + str(' ') + str(Yr.item()) + \
+                                       str(' ') + str(batch_data[0, 2].item()) + str(' ') + str(Vy_next.item()) + str(' ') + \
+                                       str(label[1].item()) + str(' ') + str(loss_vy.item())
+    assert abs(Yr_next.item()) < 100000, 'yr error ' + str(output[0, 0].item()) + str(' ') + str(output[0, 1].item()) + str(' ') + \
+                                       str(batch_data[0, 4].item()) + str(' ') + str(Vy.item()) + str(' ') + str(Yr.item()) + \
+                                       str(' ') + str(batch_data[0, 2].item()) + str(' ') + str(Yr_next.item()) + str(' ') + \
+                                       str(label[0].item()) + str(' ') + str(loss_yr.item())
+    '''
+    # return (0.4 * loss_vy + 0.6 * loss_yr) / num_examples, Vy, Yr
+    return loss_beta, loss_yr, Beta_next, Yr_next
 
 
 def loss_lookup(batch, output):
@@ -442,6 +506,10 @@ def mse(outputs, labels):
     return loss
 
 
+def beta_loss(beta_loss, yr_loss):
+    return beta_loss
+
+
 def vy_loss(vy_loss, yr_loss):
     return vy_loss
 
@@ -460,8 +528,8 @@ def cr_loss(vy_loss, yr_loss):
 
 # maintain all metrics required in this dictionary- these are used in the training and evaluation loops
 metrics = {
-    'Cf Loss': cf_loss,
-    'Cr Loss': cr_loss,
+    'Beta Loss': beta_loss,
+    'Yawrate Loss': yr_loss,
     #'Vy Loss': vy_loss,
     #'Yr Loss': yr_loss
     #'MSE': mse,

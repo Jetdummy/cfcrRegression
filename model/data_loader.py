@@ -24,6 +24,7 @@ class PIDNDataset(Dataset):
             selected_indices = [0, 1, 2, 3, 4]
         # 0 Ax[m/s2] 1 Ay[m/s2] 2 Steer[rad] 3 Yawrate[rad/s] 4 Vx[m/s] 5 Beta[rad] 6 Vy[m/s] 7 Ax_normal 8 Ay_normal
         # 9 Steer_normal 10 Yawrate_normal 11 Vx_normal 12 Beta_normal 13 Vy_normal
+        # 0Ax,1Ay,2Steer,3Yawrate,4Vx,5Ay_pre,6Steer_pre,7Yawrate_pre,8Beta,9Vy,10Ax_normal,11Ay_normal,12steer_normal,13Yawrate_normal,14Vx_normal,15Ay_pre_normal,16Steer_pre_normal,17Yawrate_pre_normal,18Beta_normal,19Vy_normal
         self.data_dir = data_dir
         self.window = window
         self.shift = shift
@@ -70,9 +71,10 @@ class PIDNDataset(Dataset):
         #
         start_idx = (idx - sum_data) * self.shift
         end_idx = start_idx + self.window
-        selected_data = self.data[dataset_index].iloc[start_idx:end_idx, :]
+        selected_data = self.data[dataset_index].iloc[start_idx:end_idx, [0, 1, 2, 3, 4, 5, 6, 7]]
+        #print(selected_data.columns)
         selected_data_x = self.data[dataset_index].iloc[start_idx:end_idx, self.selected_indices]
-        selected_data_y = self.data[dataset_index].iloc[end_idx+1, [3, 6]]  # 6 or 7
+        selected_data_y = self.data[dataset_index].iloc[end_idx+1, [6, 7]]  # 6 or 7, 3 or 9
 
         return torch.tensor(selected_data_x.to_numpy()), torch.tensor(selected_data_y.to_numpy()), torch.tensor(selected_data.to_numpy())
 

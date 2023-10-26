@@ -47,21 +47,22 @@ def evaluate(model, loss_fn, dataloader, metrics, params, train):
     Vy_lookup = np.empty((0))
     Yr_lookup = np.empty((0))
 
-    first = True
 
     # compute metrics over the dataset
-    for data_batch, labels_batch, all_batch in dataloader:
-
-        if first and not train:
-            Vyt = all_batch[0][-1][6]
-            Yrt = all_batch[0][-1][3]
-            Vy = all_batch[0][-1][6].item()
-            Yr = all_batch[0][-1][3].item()
+    for i, (data_batch, labels_batch, all_batch) in enumerate(dataloader):
+        # move to GPU if available
+        if params.cuda:
+            data_batch, labels_batch, all_batch = data_batch.cuda(
+                non_blocking=True), labels_batch.cuda(non_blocking=True), all_batch.cuda(non_blocking=True)
+        if i % 512 == 0 and not train:
+            Vyt = all_batch[0][-1][7]#6
+            Yrt = all_batch[0][-1][6]
+            Vy = all_batch[0][-1][7].item()
+            Yr = all_batch[0][-1][6].item()
             #model.init_hidden(data_batch.size(1))
-            first = False
         if train:
-            Vyt = all_batch[0][-1][6]
-            Yrt = all_batch[0][-1][3]
+            Vyt = all_batch[0][-1][7]
+            Yrt = all_batch[0][-1][6]
 
 
 
@@ -70,6 +71,9 @@ def evaluate(model, loss_fn, dataloader, metrics, params, train):
 
         predict_Vy = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
         predict_Yr = torch.zeros(labels_batch.size()[0], dtype=torch.float64)
+        if params.cuda:
+            losses_vy, losses_yr, predict_Vy, predict_Yr = losses_vy.cuda(non_blocking=True), losses_yr.cuda(
+                non_blocking=True), predict_Vy.cuda(non_blocking=True), predict_Yr.cuda(non_blocking=True)
 
         output_batch = model(data_batch)
 
@@ -94,7 +98,7 @@ def evaluate(model, loss_fn, dataloader, metrics, params, train):
         loss_vy = torch.mean(losses_vy, dtype=torch.float64)
         loss_yr = torch.mean(losses_yr, dtype=torch.float64)
 
-        loss = 0.6 * loss_vy + 0.4 * loss_yr
+        loss = 1.0 * loss_vy + 1.0 * loss_yr
         #loss = loss_vy
         '''
         # move to GPU if available
@@ -126,9 +130,9 @@ def evaluate(model, loss_fn, dataloader, metrics, params, train):
         loss_yr = loss_yr.detach()
         '''
         output_batch = output_batch.detach()
-
-        loss_vy = loss_vy.detach()
-        loss_yr = loss_yr.detach()
+        loss = loss.cpu().detach()
+        loss_vy = loss_vy.cpu().detach()
+        loss_yr = loss_yr.cpu().detach()
 
 
         if output_batch.ndim == 1:
@@ -148,7 +152,7 @@ def evaluate(model, loss_fn, dataloader, metrics, params, train):
                 Yr_pred = np.append(Yr_pred, predict_Yr.cpu().detach().numpy())
                 cf = utils.lookup_table_cf(all_batch[0, 0, 1])
                 cr = utils.lookup_table_cr(all_batch[0, 0, 1])
-                Vy = utils.bicycle_Vy2(cf, cr, all_batch[0, 0, 4], Vy, Yr, all_batch[0, 0, 2])
+                Vy = utils.bicycle_beta(cf, cr, all_batch[0, 0, 4], Vy, Yr, all_batch[0, 0, 2])
                 Yr = utils.bicycle_yr2(cf, cr, all_batch[0, 0, 4], Vy, Yr, all_batch[0, 0, 2])
                 Cf_lookup = np.append(Cf_lookup, cf)
                 Cr_lookup = np.append(Cr_lookup, cr)
@@ -158,10 +162,11 @@ def evaluate(model, loss_fn, dataloader, metrics, params, train):
 
 
         # compute all metrics on this batch
-        summary_batch = {metric: metrics[metric](loss_vy, loss_yr)
-                         for metric in metrics}
-        summary_batch['loss'] = loss.item()
-        summ.append(summary_batch)
+        with torch.no_grad():
+            summary_batch = {metric: metrics[metric](loss_vy, loss_yr)
+                            for metric in metrics}
+            summary_batch['loss'] = loss.item()
+            summ.append(summary_batch)
 
     # compute mean of all metrics in summary
     metrics_mean = {metric: np.mean([x[metric]
@@ -356,8 +361,8 @@ if __name__ == '__main__':
     logging.info("Creating the dataset...")
 
     # Choose input features in data
-    selected_indices = [0, 1, 2, 3, 4]
-
+    selected_indices = [23, 24, 25, 29, 27]
+    #selected_indices = [42, 43, 44, 46, 45]
     # Set input number of columns
     window = 1
     shift = 1
@@ -369,13 +374,16 @@ if __name__ == '__main__':
     logging.info("- done.")
 
     # Define the model
-    model = net.FourLayerModel(params).cuda() if params.cuda else net.FourLayerModel(params)
+    #model = net.FourLayerModel(params).cuda() if params.cuda else net.FourLayerModel(params)
     #model = net.LSTMRegression(params).cuda() if params.cuda else net.LSTMRegression(params)
+    model = net.AttentionRegressionModel(params=params, hidden_dim=512, num_heads=1, num_layers=2).cuda() \
+        if params.cuda else net.AttentionRegressionModel(params=params, hidden_dim=512, num_heads=1, num_layers=2)
 
     # Use parameters as float 64
     model.double()
 
-    loss_fn = net.loss_vy_yr
+    loss_fn = net.loss_beta
+    #loss_fn = net.loss_vy_yr
     metrics = net.metrics
 
     logging.info("Starting evaluation")
